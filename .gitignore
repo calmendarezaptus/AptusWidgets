@@ -1,0 +1,16 @@
+# Repositorios independientes (cada uno con su propio git)
+01-tiempos/functions/
+01-tiempos/Universal*/
+02-gastos/functions/
+02-gastos/Universal*/
+03-honorarios-fijos/functions/
+03-honorarios-fijos/Universal*/
+04-consolidado/functions/
+04-consolidado/Universal*/
+
+# Material original descargado
+_archivo/
+
+node_modules/
+.env
+*.log
