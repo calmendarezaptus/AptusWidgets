@@ -23,10 +23,10 @@ Aptus Widgets/
 
 | Proyecto | Estado |
 |---|---|
-| Tiempos | En uso; pendiente etapa de correcciones |
+| Tiempos | Correcciones hechas (vía ReportesSandbox); falta ligar Slates a V2 y desplegar |
 | Gastos | En producción (2026-11-11): proyecto, función y Slates propias |
 | Honorarios fijos | En producción (2026-11-11): proyecto, función y Slates propias |
-| Consolidado | Al final |
+| Consolidado | Función desplegada; calendario unificado listo (falta Slate); liberaciones y configuración por construir |
 
 Las carpetas de funciones y Slates son repositorios independientes y este repositorio las ignora
 (`.gitignore`).

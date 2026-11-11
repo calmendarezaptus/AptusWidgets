@@ -6,17 +6,18 @@ con filtros), **liberaciones** y **configuración del proyecto**. Contexto en
 
 | | |
 |---|---|
-| Proyecto de Catalyst | `OverviewForAptusFinancials` (por crear) |
+| Proyecto de Catalyst | `OverviewForAptusFinancials` (`247000003819226`) |
+| URL de la función | `https://overviewforaptusfinancials-730085095.development.catalystserverless.com/server/aptus_overview_services` |
 | Función | `aptus_overview_services` → `functions/aptus_overview_services` |
 | Slates (3 de 3) | Calendario unificado · Liberaciones · Configuración del proyecto |
-| Estado | Función en esqueleto (lecturas del calendario unificado); apps por construir — al final del orden |
+| Estado | Función desplegada (solo lecturas); calendario unificado listo (2026-11-11), falta su Slate; liberaciones y configuración por construir |
 
 ## Piezas
 
 | Pieza | Carpeta | Repositorio | Slate / Deployment Name |
 |---|---|---|---|
-| Función | `functions/aptus_overview_services` | `AptusOverviewServices` (por crear) | — |
-| Calendario unificado | `UniversalAptusCalendar` (por crear) | `UniversalAptusCalendar` | `universal-aptus-calendar` |
+| Función | `functions/aptus_overview_services` | `AptusOverviewServices` ✓ | — |
+| Calendario unificado | `UniversalAptusCalendar` | `UniversalAptusCalendar` ✓ | `universal-aptus-calendar` |
 | Liberaciones | `UniversalAptusLiberaciones` (por crear) | `UniversalAptusLiberaciones` | `universal-aptus-liberaciones` |
 | Configuración del proyecto | `UniversalAptusProjectConfig` (por crear) | `UniversalAptusProjectConfig` | `universal-aptus-projectconfig` |
 
@@ -42,11 +43,23 @@ Por construir:
 | Liberaciones | `POST /:org/liberaciones {desde, hasta, cliente_id?}`, `GET /:org/liberado-disponible` | Sin `cliente_id` libera **todos los clientes**: confirmación explícita. No hay "deshacer". |
 | Configuración | `GET/PATCH /:org/proyectos/:id`, tarifas, responsables, `GET /:org/impuestos` | `sincronizar-tareas` y `crear-en-books` **escriben en Books**: solo con aprobación y con vista previa primero. |
 
+## Despliegue de la función con el CLI
+
+```bash
+cd 04-consolidado
+catalyst project:use 247000003819226      # solo la primera vez en esta máquina
+cd functions/aptus_overview_services && npm install && npm test && cd ../..
+catalyst deploy --only functions:aptus_overview_services
+```
+
+Verificado en vivo (2026-11-11): `tiempos` (29), `gastos` (12), `cargos-fijos` (3), catálogos 200;
+`prebills` → 404.
+
 ## Configuración en Catalyst
 
 1. Función `aptus_overview_services` (Node 24, Advanced I/O).
-2. Variable `AUTH_TOKEN` (`.env` local ya creado, no se versiona; mejor como variable de la consola).
-3. Caché: segmento `APTUS_MIRROR_CONN_DATA`.
+2. Variable `AUTH_TOKEN`: viaja en `.env` (local, no se versiona), igual que en las otras áreas.
+3. Caché: funciona con el segmento `Default`.
 4. Dominios autorizados: las 3 Slates de este proyecto (`universal-aptus-calendar`,
    `universal-aptus-liberaciones`, `universal-aptus-projectconfig` `.onslate.com`).
 
@@ -58,6 +71,9 @@ cd functions/aptus_overview_services && npm test # rutas + core
 
 ## Pendientes
 
-1. Calendario unificado (base: calendario de gastos; un color por tipo de registro y filtro de tipo).
+1. ~~Calendario unificado~~ Hecho (2026-11-11): tema Violeta; tiempos índigo, gastos turquesa, honorarios
+   ámbar; filtro por tipo + cliente/proyecto/abogado; totales por tipo y moneda; editar abre la captura
+   del área; solo lectura. Probado con los 44 registros reales. **Falta su Slate**
+   `universal-aptus-calendar` y el dominio en CORS.
 2. Liberaciones y su servicio.
 3. Configuración del proyecto y su servicio.
