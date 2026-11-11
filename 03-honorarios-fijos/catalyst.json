@@ -1,0 +1,9 @@
+{
+  "functions": {
+    "targets": [
+      "fixed_fee_services"
+    ],
+    "ignore": [],
+    "source": "functions"
+  }
+}
