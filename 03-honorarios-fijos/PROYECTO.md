@@ -10,14 +10,14 @@ Gastos (`02-gastos/`), que es la referencia.
 | URL de la función | `https://fixedfeesforaptusfinancials-730085095.development.catalystserverless.com/server/fixed_fee_services` |
 | Función | `fixed_fee_services` → `functions/fixed_fee_services` |
 | Slates (2 de 3) | Captura de honorarios fijos · Calendario de honorarios fijos |
-| Estado | Función completa, desplegada y probada (2026-11-11); apps por construir |
+| Estado | Función desplegada y probada; captura lista (2026-11-11), falta su Slate; calendario por construir |
 
 ## Piezas
 
 | Pieza | Carpeta | Repositorio | Slate / Deployment Name |
 |---|---|---|---|
 | Función | `functions/fixed_fee_services` | `AptusFixedFeeServices` ✓ | — |
-| Captura | `UniversalAptusFixedFeeEntry` (por crear) | `UniversalAptusFixedFeeEntry` | `universal-aptus-fixedfeeentry` |
+| Captura | `UniversalAptusFixedFeeEntry` | `UniversalAptusFixedFeeEntry` ✓ | `universal-aptus-fixedfeeentry` |
 | Calendario | `UniversalFixedFeesCalendar` (por crear) | `UniversalFixedFeesCalendar` | `universal-fixedfeeentry-calendar` |
 
 ## Rutas de `fixed_fee_services`
@@ -59,10 +59,14 @@ Verificado en vivo (2026-11-11): lecturas 200, `cargos-fijos/999999` → 404 JSO
 
 ```bash
 cd functions/fixed_fee_services && npm test      # 10: servicio, rutas, core
+cd UniversalAptusFixedFeeEntry && npm test        # 7
 ```
 
 ## Pendientes
 
 1. ~~`CargoFijoService` + rutas de escritura + pruebas.~~ Hecho.
-2. Captura (copia del diseño de la captura de gastos, color propio).
+2. ~~Captura~~ Hecha (2026-11-11): tema Ámbar; cargo manual + igualas del mes con vista previa;
+   probada con datos reales sin escribir (listas filtradas, honorario propuesto, vista previa de
+   noviembre, edición bloqueada del cargo #11 facturado). **Falta su Slate** `universal-aptus-fixedfeeentry`
+   y el dominio en CORS.
 3. Calendario (copia del calendario de gastos).
