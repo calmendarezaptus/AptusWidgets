@@ -10,7 +10,7 @@ con filtros), **liberaciones** y **configuración del proyecto**. Contexto en
 | URL de la función | `https://overviewforaptusfinancials-730085095.development.catalystserverless.com/server/aptus_overview_services` |
 | Función | `aptus_overview_services` → `functions/aptus_overview_services` |
 | Slates (3 de 3) | Calendario unificado · Liberaciones · Configuración del proyecto |
-| Estado | Función desplegada (solo lecturas); calendario unificado listo (2026-11-11), falta su Slate; liberaciones y configuración por construir |
+| Estado | Función desplegada (solo lecturas); calendario unificado publicado (2026-11-11); liberaciones y configuración por construir |
 
 ## Piezas
 
@@ -73,7 +73,7 @@ cd functions/aptus_overview_services && npm test # rutas + core
 
 1. ~~Calendario unificado~~ Hecho (2026-11-11): tema Violeta; tiempos índigo, gastos turquesa, honorarios
    ámbar; filtro por tipo + cliente/proyecto/abogado; totales por tipo y moneda; editar abre la captura
-   del área; solo lectura. Probado con los 44 registros reales. **Falta su Slate**
-   `universal-aptus-calendar` y el dominio en CORS.
+   del área; solo lectura. Probado con los 44 registros reales. Slate y CORS verificados:
+   la Slate publicada carga los 44 registros en Chrome sin errores.
 2. Liberaciones y su servicio.
 3. Configuración del proyecto y su servicio.
