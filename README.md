@@ -24,7 +24,7 @@ Aptus Widgets/
 | Proyecto | Estado |
 |---|---|
 | Tiempos | En uso; pendiente etapa de correcciones |
-| Gastos | Apps listas; función nueva por desplegar y migrar |
+| Gastos | En producción (2026-11-11): proyecto, función y Slates propias |
 | Honorarios fijos | Siguiente |
 | Consolidado | Al final |
 
