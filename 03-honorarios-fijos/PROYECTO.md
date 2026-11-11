@@ -10,7 +10,7 @@ Gastos (`02-gastos/`), que es la referencia.
 | URL de la función | `https://fixedfeesforaptusfinancials-730085095.development.catalystserverless.com/server/fixed_fee_services` |
 | Función | `fixed_fee_services` → `functions/fixed_fee_services` |
 | Slates (2 de 3) | Captura de honorarios fijos · Calendario de honorarios fijos |
-| Estado | Función desplegada y probada; captura lista (2026-11-11), falta su Slate; calendario por construir |
+| Estado | Función y captura en producción (2026-11-11); calendario listo, falta su Slate |
 
 ## Piezas
 
@@ -18,7 +18,7 @@ Gastos (`02-gastos/`), que es la referencia.
 |---|---|---|---|
 | Función | `functions/fixed_fee_services` | `AptusFixedFeeServices` ✓ | — |
 | Captura | `UniversalAptusFixedFeeEntry` | `UniversalAptusFixedFeeEntry` ✓ | `universal-aptus-fixedfeeentry` |
-| Calendario | `UniversalFixedFeesCalendar` (por crear) | `UniversalFixedFeesCalendar` | `universal-fixedfeeentry-calendar` |
+| Calendario | `UniversalFixedFeesCalendar` | `UniversalFixedFeesCalendar` ✓ | `universal-fixedfeeentry-calendar` |
 
 ## Rutas de `fixed_fee_services`
 
@@ -60,6 +60,7 @@ Verificado en vivo (2026-11-11): lecturas 200, `cargos-fijos/999999` → 404 JSO
 ```bash
 cd functions/fixed_fee_services && npm test      # 10: servicio, rutas, core
 cd UniversalAptusFixedFeeEntry && npm test        # 7
+cd UniversalFixedFeesCalendar && npm test         # 6
 ```
 
 ## Pendientes
@@ -67,6 +68,8 @@ cd UniversalAptusFixedFeeEntry && npm test        # 7
 1. ~~`CargoFijoService` + rutas de escritura + pruebas.~~ Hecho.
 2. ~~Captura~~ Hecha (2026-11-11): tema Ámbar; cargo manual + igualas del mes con vista previa;
    probada con datos reales sin escribir (listas filtradas, honorario propuesto, vista previa de
-   noviembre, edición bloqueada del cargo #11 facturado). **Falta su Slate** `universal-aptus-fixedfeeentry`
-   y el dominio en CORS.
-3. Calendario (copia del calendario de gastos).
+   noviembre, edición bloqueada del cargo #11 facturado). Slate y CORS verificados.
+3. ~~Calendario~~ Hecho (2026-11-11): tema Ámbar; lista, mes, semana y día; cliente completado con el
+   catálogo de proyectos (la API no lo trae); probado con los 3 cargos reales. **Falta su Slate**
+   `universal-fixedfeeentry-calendar` y el dominio en CORS.
+4. Prueba completa del usuario: crear un cargo, editarlo y borrarlo; generar una iguala de prueba.
