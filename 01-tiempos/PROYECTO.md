@@ -10,34 +10,54 @@ Captura y calendario de **tiempos**. Es el proyecto original; contexto en
 | URL de la función | `https://timeentryforaptusfinancials-730085095.development.catalystserverless.com/server/time_entry_services` |
 | Función | `time_entry_services` → `functions/time_entry_services` |
 | Slates | Captura de tiempos · Calendario de tiempos |
-| Estado | En uso. Pendiente la etapa de correcciones (abajo) |
+| Estado | Correcciones hechas (2026-11-11): tiempos vía ReportesSandbox. **Falta ligar las Slates a los repos V2 y desplegar la función** |
 
 ## Piezas
 
 | Pieza | Carpeta | Repositorio | Slate / Deployment Name |
 |---|---|---|---|
-| Función | `functions/time_entry_services` | `AptusTimeEntryServices` (por crear) | — |
-| Captura de tiempos | `UniversalAptusTimeEntry` (paquete `widget-ui`) | `UniversalAptusTimeEntryV2` (nuevo, por crear) | `universal-aptus-timeentry` |
-| Calendario de tiempos | `UniversalTimesCalendar` (paquete `advancedtimescalendar`) | `UniversalTimesCalendarV2` (nuevo, por crear) | `universal-timeentry-calendar` |
+| Función | `functions/time_entry_services` | `AptusTimeEntryServices` ✓ | — |
+| Captura de tiempos | `UniversalAptusTimeEntry` (paquete `widget-ui`) | `UniversalAptusTimeEntryV2` ✓ | `universal-aptus-timeentry` |
+| Calendario de tiempos | `UniversalTimesCalendar` (paquete `advancedtimescalendar`) | `UniversalTimesCalendarV2` ✓ | `universal-timeentry-calendar` |
 
 Las carpetas de las apps vienen de los ZIP de los repositorios actuales (copias originales en
 `_archivo/`). Se versionan en repositorios nuevos para la etapa de mejoras.
 
 ## Rutas de `time_entry_services`
 
-| Método | Ruta | Destino |
-|---|---|---|
-| POST | `/:org/tiempos` | **Books directo** (`TimeEntryService`): resuelve/crea la tarea y crea el time entry |
-| GET / PUT | `/:org/tiempos/:id` | Books directo |
-| GET / POST | `/:org/plantillas` | Books (`cm_plantillas_time_entry`) |
-| GET | `/:org/tareas` | Books (`cm_cat_logo_de_tareas`) |
-| GET | `/:org/clientes`, `proyectos`, `abogados`, `tiempos` | ReportesSandbox, lista blanca (`core/catalogs.js`) |
+Desde 2026-11-11 **los tiempos van a ReportesSandbox** (decisión del usuario, opción A de
+`docs/CONTEXTO_CATALYST.md` §4). La API guarda el tiempo con su tarifa congelada y lo respalda en
+Books por su cuenta (crea la tarea, asigna al usuario, reintenta cada noche). La función ya no
+escribe time entries en Books.
 
-Cambios del 2026-11-10 (desplegados con el CLI el 2026-11-11):
-- Auth, conexión y cliente de ReportesSandbox ahora vienen de `core/` (código compartido).
-- La ruta genérica `GET /:org/:catalog` ya no reenvía cualquier ruta: solo la lista blanca. Las
-  apps de tiempos solo usan `clientes`, `proyectos`, `abogados` y `tiempos`.
-- Rutas inexistentes responden 404 JSON (antes HTML de Express).
+| Método | Ruta | Destino / reglas |
+|---|---|---|
+| POST | `/:org/tiempos` | `POST /tiempos`: `abogado_id`, `proyecto_id` (IDs locales), `fecha`, `horas` (decimales, ≤24, 2 decimales), `tarea_estandar_id` **o** `tarea`, `facturable` (bool), `descripcion` (≤500, la nota en Books). 409 sin usuario de Books; 422 sin tarifa |
+| GET / PATCH / DELETE | `/:org/tiempos/:id` | PATCH sin abogado ni proyecto. DELETE también lo borra en Books. 409 si está en Prebill o facturado |
+| GET | `/:org/tiempos` | filtros: `proyecto_id, abogado_id, liberado, facturado, prebill_id, facturable, tarea_estandar_id, books_estado` |
+| GET | `/:org/tareas-estandar` | catálogo de tareas de ReportesSandbox (UTBMS, facturable); `?todos` |
+| GET | `/:org/clientes`, `proyectos`, `abogados` | listas |
+| GET / POST | `/:org/plantillas` | Books (`cm_plantillas_time_entry`); siguen guardando IDs de Books |
+
+Quitado: `PUT /:org/tiempos/:id` y `GET /:org/tareas` (Books), `TimeEntryService`, `TaskCatalogService`.
+
+### Captura y calendario (2026-11-11)
+
+- **Captura:** IDs locales, horas decimales, tareas estándar, edición por `?tiempo_id=` (antes
+  `time_entry_id` de Books) con candado de Prebill/facturado y aviso si el respaldo en Books quedó
+  pendiente. Sin cronómetro ni referencia (la API no los recibe). Incremento `0.25` (era `0.55`).
+  Aviso en proyectos de cuota fija o iguala. Plantillas anteriores: si su tarea no está entre las
+  estándar, se elige a mano.
+- **Calendario:** editar por ID local; borrar con `DELETE /tiempos/:id` y solo un 404 JSON con
+  `stage` cuenta como ya eliminado (antes cualquier 404 era éxito). Candado, fecha inicial hoy
+  (antes septiembre de 2026) y URLs en `src/lib/api.ts`.
+
+### Orden para publicarlo (sin dejar la captura caída)
+
+1. Ligar las dos Slates a `UniversalAptusTimeEntryV2` y `UniversalTimesCalendarV2` (rama `main`).
+2. Desplegar la función **justo después**: `catalyst deploy --only functions:time_entry_services`.
+   Mientras una pieza sea vieja y la otra nueva, guardar falla con 400 (no escribe nada).
+3. Probar: capturar un tiempo de prueba, verlo en el calendario, editarlo y borrarlo.
 
 ## Despliegue con el CLI
 
@@ -87,14 +107,13 @@ cd functions/time_entry_services && npm test     # 25 (mocks; nunca escriben en 
 cd UniversalAptusTimeEntry && npm test
 ```
 
-## Pendientes (etapa de correcciones)
+## Pendientes
 
-1. **Tiempos directos a Books**: no pasan por ReportesSandbox, así que no entran a Prebills.
-   Decisión en `docs/CONTEXTO_CATALYST.md` §4 / §10.1. Cualquier escritura nueva a Books requiere
-   aprobación.
-2. **Borrar desde el calendario**: no existe `DELETE /:org/tiempos/:id` y la app toma el 404 como
-   éxito (el tiempo sigue existiendo). Corregido así en el calendario de gastos.
-3. Las ediciones no se sincronizan con ReportesSandbox.
-4. URLs fijas en el código (`App.tsx`, hooks): pasar a `src/lib/api.ts` + variables de entorno, como
-   en gastos.
-5. Incremento de 0.55 h en la captura; fecha inicial fija en septiembre de 2026 en el calendario.
+1. ~~Tiempos directos a Books~~ Hecho: vía ReportesSandbox.
+2. ~~Borrar desde el calendario / 404 como éxito~~ Hecho.
+3. ~~Ediciones sin sincronizar con ReportesSandbox~~ Hecho: PATCH a la API.
+4. ~~URLs fijas~~ Hecho.
+5. ~~Incremento 0.55 y fecha de septiembre~~ Hecho.
+6. Publicar (ver "Orden para publicarlo") y prueba completa del usuario.
+7. Tiempos capturados antes con la captura vieja solo existen en Books: no aparecen en el calendario
+   ni entran a Prebills (ReportesSandbox no importa time entries de Books).

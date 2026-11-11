@@ -171,8 +171,8 @@ Problemas de flujo (consecuencia de la §4):
 
 ## 4. Brecha principal: tiempos directos a Books vs. ReportesSandbox
 
-> **Decisión pendiente del usuario.** Es lo primero que hay que resolver antes de construir
-> liberaciones y Prebills.
+> **Resuelta (2026-11-11): opción A.** La captura de tiempos usa `POST /tiempos` de ReportesSandbox
+> (detalle en `01-tiempos/PROYECTO.md`). Lo de abajo queda como contexto.
 
 Hoy el widget crea el time entry **directo en Books**. ReportesSandbox no se entera: el tiempo no
 existe en su tabla `tiempos`, no tiene tarifa congelada (jerarquía de 9 niveles), no se puede
