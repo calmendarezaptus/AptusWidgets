@@ -34,7 +34,7 @@ Las carpetas de las apps vienen de los ZIP de los repositorios actuales (copias 
 | GET | `/:org/clientes`, `proyectos`, `abogados`, `tiempos` | ReportesSandbox, lista blanca (`core/catalogs.js`) |
 | POST/GET/PATCH/DELETE | `/:org/gastos…`, GET `/:org/categorias-gasto` | **Transitorio**: se quitan al migrar gastos (`02-gastos/PROYECTO.md`) |
 
-Cambios del 2026-11-10 (requieren volver a desplegar):
+Cambios del 2026-11-10 (desplegados con el CLI el 2026-11-11):
 - Auth, conexión y cliente de ReportesSandbox ahora vienen de `core/` (código compartido).
 - La ruta genérica `GET /:org/:catalog` ya no reenvía cualquier ruta: solo la lista blanca. Las
   apps de tiempos solo usan `clientes`, `proyectos`, `abogados` y `tiempos`.
@@ -85,9 +85,9 @@ No subir archivos sueltos desde la consola: el 2026-11-11 eso dejó la función 
 
 1. **Variable** `AUTH_TOKEN`: hoy viaja en `.env` dentro del despliegue. Recomendado moverla a
    variable de entorno de la función en la consola.
-2. **Caché**: segmento `APTUS_MIRROR_CONN_DATA` (ya existe).
+2. **Caché**: hoy solo existe `Default` (ver arriba). Opcional: crear `APTUS_MIRROR_CONN_DATA`.
 3. **Dominios autorizados**: `https://universal-aptus-timeentry.onslate.com`,
-   `https://universal-timeentry-calendar.onslate.com`. Quitar el de gastos cuando se migre.
+   `https://universal-timeentry-calendar.onslate.com`. Limpiar los 3 que responden 404.
 4. **Slates**: build `npm run build`, salida `dist/`.
 
 ## Pruebas
