@@ -105,8 +105,7 @@ Resumen; el detalle está en `CONTEXTO.md` y `prebill-api.md`.
 | `GET /:organizationId/plantillas` | `TemplateService.list` | Lista todas las páginas de `cm_plantillas_time_entry`. |
 | `POST /:organizationId/plantillas` | `TemplateService.create` | Crea una plantilla. |
 | `GET /:organizationId/tareas` | `TaskCatalogService.getTasks` | Catálogo global de tareas (paginado). |
-| `POST /:organizationId/gastos`, `GET/PATCH/DELETE /:organizationId/gastos/:gastoId` | `GastoService` → `core/PrebillApiClient` | **Transitorio**: gastos ya vive en `expense_services` (proyecto Gastos); estas rutas se quitan cuando las apps de gastos apunten a la función nueva. Gastos en ReportesSandbox (2026-11-10). Usa la misma conexión que Mirror DB (`APTUS_MIRROR_DB_*`). El listado `GET /:org/gastos` y `GET /:org/categorias-gasto` siguen en la ruta genérica. |
-| `GET /:organizationId/:catalog` | `core/catalogs.js` (`registerCatalogRoutes`) | Desde 2026-11-10 solo `clientes`, `proyectos`, `abogados`, `tiempos` y (transitorio) `gastos`, `categorias-gasto`; cualquier otro recurso → 404. Antes era un proxy genérico a cualquier ruta. **Debe ser la última ruta.** |
+| `GET /:organizationId/:catalog` | `core/catalogs.js` (`registerCatalogRoutes`) | Desde 2026-11-10 solo `clientes`, `proyectos`, `abogados` y `tiempos` (gastos se movió a `expense_services` el 2026-11-11); cualquier otro recurso → 404. Antes era un proxy genérico a cualquier ruta. **Debe ser la última ruta.** |
 
 Contrato del time entry (detalle en `01-tiempos/functions/time_entry_services/TIME_ENTRY_ENDPOINT.md`):
 `project_id` y `user_id` son IDs de **Books** en string; `task_name` es el `cf_nombre` del catálogo;

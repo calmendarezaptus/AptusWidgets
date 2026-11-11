@@ -9,7 +9,7 @@ Captura y calendario de **gastos y reembolsos** sobre ReportesSandbox. Contexto 
 | URL de la función | `https://expensesforaptusfinancials-730085095.development.catalystserverless.com/server/expense_services` |
 | Función | `expense_services` → `functions/expense_services` |
 | Slates (2 de 3) | Captura de gastos · Calendario de gastos |
-| Estado | Función desplegada y probada (2026-11-11); apps apuntando a ella; Slates y CORS verificados (2026-11-11); falta la prueba completa de alta, edición y borrado |
+| Estado | Función desplegada y probada (2026-11-11); apps apuntando a ella; **En producción** (2026-11-11): función, Slates y CORS verificados; migración terminada |
 
 ## Piezas
 
@@ -80,8 +80,9 @@ segmento `Default` (respuestas en ~0.4 s) y `AUTH_TOKEN` viaja en `.env`, igual 
    - Instalación `npm install`, build `npm run build`, salida `dist`.
 4. ~~**Dominios autorizados**~~ Hecho. Ojo: el dominio debe ser el del Deployment Name, no el aleatorio (`universalexpensescal-…`) que Catalyst da por omisión. Dominios (CORS activado): los dos `.onslate.com` anteriores.
 5. Probar: listar, crear, editar y borrar un gasto de prueba.
-6. Confirmado → quitar las rutas `/gastos` y `categorias-gasto` de `time_entry_services`, volver a
-   desplegarla, y limpiar los dominios de gastos del proyecto de Tiempos.
+6. ~~Confirmado → quitar las rutas de gastos de `time_entry_services`.~~ Hecho (2026-11-11): prueba
+   completa de alta, edición y borrado hecha por el usuario; `time_entry_services` redesplegada sin
+   rutas de gastos (responden 404).
 
 ## Pruebas
 
@@ -93,6 +94,5 @@ cd UniversalExpensesCalendar && npm test         # 6
 
 ## Pendientes
 
-- Completar la migración (pasos 3 a 6 arriba).
 - Reembolsos al abogado (`POST /gastos/:id/reembolso`, `GET /reembolsos`): ver `docs/CONTEXTO_CATALYST.md` §5.1.
 - El calendario se probó con datos reales (12 gastos, incluido el #31); falta probarlo desplegado.

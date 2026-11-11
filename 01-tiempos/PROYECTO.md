@@ -9,7 +9,7 @@ Captura y calendario de **tiempos**. Es el proyecto original; contexto en
 | Proyecto de Catalyst | `TimeEntryForAptusFinancials` (existe) |
 | URL de la función | `https://timeentryforaptusfinancials-730085095.development.catalystserverless.com/server/time_entry_services` |
 | Función | `time_entry_services` → `functions/time_entry_services` |
-| Slates | Captura de tiempos · Calendario de tiempos (+ la de gastos, que se va a su proyecto) |
+| Slates | Captura de tiempos · Calendario de tiempos |
 | Estado | En uso. Pendiente la etapa de correcciones (abajo) |
 
 ## Piezas
@@ -32,7 +32,6 @@ Las carpetas de las apps vienen de los ZIP de los repositorios actuales (copias 
 | GET / POST | `/:org/plantillas` | Books (`cm_plantillas_time_entry`) |
 | GET | `/:org/tareas` | Books (`cm_cat_logo_de_tareas`) |
 | GET | `/:org/clientes`, `proyectos`, `abogados`, `tiempos` | ReportesSandbox, lista blanca (`core/catalogs.js`) |
-| POST/GET/PATCH/DELETE | `/:org/gastos…`, GET `/:org/categorias-gasto` | **Transitorio**: se quitan al migrar gastos (`02-gastos/PROYECTO.md`) |
 
 Cambios del 2026-11-10 (desplegados con el CLI el 2026-11-11):
 - Auth, conexión y cliente de ReportesSandbox ahora vienen de `core/` (código compartido).
@@ -84,7 +83,7 @@ No subir archivos sueltos desde la consola: el 2026-11-11 eso dejó la función 
 ## Pruebas
 
 ```bash
-cd functions/time_entry_services && npm test     # 35 (mocks; nunca escriben en Books)
+cd functions/time_entry_services && npm test     # 25 (mocks; nunca escriben en Books)
 cd UniversalAptusTimeEntry && npm test
 ```
 
@@ -99,4 +98,3 @@ cd UniversalAptusTimeEntry && npm test
 4. URLs fijas en el código (`App.tsx`, hooks): pasar a `src/lib/api.ts` + variables de entorno, como
    en gastos.
 5. Incremento de 0.55 h en la captura; fecha inicial fija en septiembre de 2026 en el calendario.
-6. Quitar las rutas transitorias de gastos.
