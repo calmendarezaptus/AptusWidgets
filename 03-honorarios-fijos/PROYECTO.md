@@ -10,7 +10,7 @@ Gastos (`02-gastos/`), que es la referencia.
 | URL de la función | `https://fixedfeesforaptusfinancials-730085095.development.catalystserverless.com/server/fixed_fee_services` |
 | Función | `fixed_fee_services` → `functions/fixed_fee_services` |
 | Slates (2 de 3) | Captura de honorarios fijos · Calendario de honorarios fijos |
-| Estado | Función y captura en producción (2026-11-11); calendario listo, falta su Slate |
+| Estado | **En producción** (2026-11-11): función, captura y calendario con Slates y CORS verificados; falta la prueba completa del usuario |
 
 ## Piezas
 
@@ -70,6 +70,6 @@ cd UniversalFixedFeesCalendar && npm test         # 6
    probada con datos reales sin escribir (listas filtradas, honorario propuesto, vista previa de
    noviembre, edición bloqueada del cargo #11 facturado). Slate y CORS verificados.
 3. ~~Calendario~~ Hecho (2026-11-11): tema Ámbar; lista, mes, semana y día; cliente completado con el
-   catálogo de proyectos (la API no lo trae); probado con los 3 cargos reales. **Falta su Slate**
-   `universal-fixedfeeentry-calendar` y el dominio en CORS.
+   catálogo de proyectos (la API no lo trae); probado con los 3 cargos reales. Slate y CORS verificados: la Slate
+   desplegada carga los cargos en Chrome sin errores.
 4. Prueba completa del usuario: crear un cargo, editarlo y borrarlo; generar una iguala de prueba.
