@@ -10,7 +10,7 @@ Captura y calendario de **tiempos**. Es el proyecto original; contexto en
 | URL de la función | `https://timeentryforaptusfinancials-730085095.development.catalystserverless.com/server/time_entry_services` |
 | Función | `time_entry_services` → `functions/time_entry_services` |
 | Slates | Captura de tiempos · Calendario de tiempos |
-| Estado | **Publicado** (2026-11-11): tiempos vía ReportesSandbox; Slates en los repos V2 y función desplegada. Falta la prueba completa del usuario |
+| Estado | **Publicado** (2026-11-11): tiempos vía ReportesSandbox; Slates en los repos V2 y función desplegada. Prueba completa del usuario OK |
 
 ## Piezas
 
@@ -116,6 +116,7 @@ cd UniversalAptusTimeEntry && npm test
 5. ~~Incremento 0.55 y fecha de septiembre~~ Hecho.
 6. ~~Publicar~~ Hecho (2026-11-11). Verificado en Chrome sin escribir: la captura carga las 14 tareas
    estándar y solo ofrece Horas e Inicia/Termina; editar el tiempo #78 (Prebill #10) queda bloqueado;
-   el calendario carga los 29 tiempos. **Falta la prueba completa del usuario.**
+   el calendario carga los 29 tiempos. Prueba completa del usuario OK (2026-11-11): el tiempo #80 se
+   guardó con tarifa y quedó respaldado en Books (`books_estado: respaldado`); el borrado también funcionó.
 7. Tiempos capturados antes con la captura vieja solo existen en Books: no aparecen en el calendario
    ni entran a Prebills (ReportesSandbox no importa time entries de Books).
