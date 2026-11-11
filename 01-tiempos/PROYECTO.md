@@ -40,6 +40,47 @@ Cambios del 2026-11-10 (requieren volver a desplegar):
   apps de tiempos solo usan `clientes`, `proyectos`, `abogados` y `tiempos`.
 - Rutas inexistentes responden 404 JSON (antes HTML de Express).
 
+## Despliegue con el CLI
+
+`01-tiempos/` es la carpeta del proyecto para el CLI (`catalyst.json`; la selección del proyecto
+vive en `.catalystrc`, que no se versiona).
+
+```bash
+cd 01-tiempos
+catalyst project:use 247000003688050      # solo la primera vez en esta máquina
+cd functions/time_entry_services && npm install && npm test && cd ../..
+catalyst deploy --only functions:time_entry_services
+```
+
+No subir archivos sueltos desde la consola: el 2026-11-11 eso dejó la función caída (ver abajo).
+
+## Estado revisado con el CLI (2026-11-11)
+
+- **Función caída antes de la revisión:** en la consola había archivos con otro nombre
+  (`core/catalog.js`, `core/AuthServices.js`) mezclados con los anteriores. `index.js` no
+  encontraba sus imports y todas las rutas daban 500 o se quedaban sin respuesta. Se volvió a
+  desplegar desde el CLI y ahora lo desplegado es idéntico al repositorio `AptusTimeEntryServices`.
+- **Rutas en vivo:** `clientes` (2,570), `proyectos` (13), `abogados` (13), `tiempos` (29), `tareas`,
+  `plantillas`, `gastos` (12) y `categorias-gasto` (11) responden 200. `gastos/999999` responde el 404
+  JSON de la API, y un recurso fuera de la lista blanca (`prebills`) responde 404.
+- **Función:** Node 24, 256 MB, sin variables de entorno en la consola (`AUTH_TOKEN` viaja en
+  `.env`). Las reglas de seguridad permiten todos los métodos sin autenticación (`optional`).
+- **Caché:** solo existe el segmento `Default`, no `APTUS_MIRROR_CONN_DATA`. Las respuestas tardan
+  ~0.4 s, así que la conexión sí queda en caché; probablemente el SDK usa el segmento por omisión.
+- **Dominios autorizados (6):**
+
+  | Dominio | Slate |
+  |---|---|
+  | `universal-aptus-timeentry.onslate.com` | Captura de tiempos ✓ |
+  | `universal-timeentry-calendar.onslate.com` | Calendario de tiempos ✓ |
+  | `universalaptustimeen-obfsxnci.onslate.com` | "Enhanced Time Entry" (responde 200) — ¿tercera Slate? |
+  | `universalaptustimeen-itqgbvan.onslate.com` | 404: Slate borrada, se puede quitar |
+  | `universaltimescalend-wjfsyjhp.onslate.com` | 404: Slate borrada, se puede quitar |
+  | `universalaptusexpens-nsvlwjrd.onslate.com` | 404: Slate de gastos borrada, se puede quitar |
+
+  `universal-aptus-expenseentry.onslate.com` ya no responde (404) y no está autorizado: la captura de
+  gastos está fuera de servicio hasta crearla en el proyecto de Gastos.
+
 ## Configuración en Catalyst
 
 1. **Variable** `AUTH_TOKEN`: hoy viaja en `.env` dentro del despliegue. Recomendado moverla a

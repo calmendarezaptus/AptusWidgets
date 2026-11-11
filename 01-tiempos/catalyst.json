@@ -1,0 +1,9 @@
+{
+  "functions": {
+    "targets": [
+      "time_entry_services"
+    ],
+    "ignore": [],
+    "source": "functions"
+  }
+}

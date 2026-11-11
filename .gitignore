@@ -14,3 +14,7 @@ _archivo/
 node_modules/
 .env
 *.log
+
+# Selección local del proyecto de Catalyst (la crea `catalyst project:use`)
+.catalystrc
+catalyst-debug.log
