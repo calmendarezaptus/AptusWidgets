@@ -67,19 +67,10 @@ No subir archivos sueltos desde la consola: el 2026-11-11 eso dejó la función 
   `.env`). Las reglas de seguridad permiten todos los métodos sin autenticación (`optional`).
 - **Caché:** solo existe el segmento `Default`, no `APTUS_MIRROR_CONN_DATA`. Las respuestas tardan
   ~0.4 s, así que la conexión sí queda en caché; probablemente el SDK usa el segmento por omisión.
-- **Dominios autorizados (6):**
-
-  | Dominio | Slate |
-  |---|---|
-  | `universal-aptus-timeentry.onslate.com` | Captura de tiempos ✓ |
-  | `universal-timeentry-calendar.onslate.com` | Calendario de tiempos ✓ |
-  | `universalaptustimeen-obfsxnci.onslate.com` | "Enhanced Time Entry" (responde 200) — ¿tercera Slate? |
-  | `universalaptustimeen-itqgbvan.onslate.com` | 404: Slate borrada, se puede quitar |
-  | `universaltimescalend-wjfsyjhp.onslate.com` | 404: Slate borrada, se puede quitar |
-  | `universalaptusexpens-nsvlwjrd.onslate.com` | 404: Slate de gastos borrada, se puede quitar |
-
-  `universal-aptus-expenseentry.onslate.com` ya no responde (404) y no está autorizado: la captura de
-  gastos está fuera de servicio hasta crearla en el proyecto de Gastos.
+- **Dominios autorizados** (limpiados por el usuario y verificados el 2026-11-11): solo
+  `universal-aptus-timeentry.onslate.com` ("Enhanced Time Entry") y
+  `universal-timeentry-calendar.onslate.com` ("Advanced Times Calendar"); ambos responden 200 y
+  CORS los autoriza. Los dominios aleatorios anteriores ya no responden ni están autorizados.
 
 ## Configuración en Catalyst
 
@@ -87,7 +78,7 @@ No subir archivos sueltos desde la consola: el 2026-11-11 eso dejó la función 
    variable de entorno de la función en la consola.
 2. **Caché**: hoy solo existe `Default` (ver arriba). Opcional: crear `APTUS_MIRROR_CONN_DATA`.
 3. **Dominios autorizados**: `https://universal-aptus-timeentry.onslate.com`,
-   `https://universal-timeentry-calendar.onslate.com`. Limpiar los 3 que responden 404.
+   `https://universal-timeentry-calendar.onslate.com` (hecho).
 4. **Slates**: build `npm run build`, salida `dist/`.
 
 ## Pruebas

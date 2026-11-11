@@ -9,7 +9,7 @@ Captura y calendario de **gastos y reembolsos** sobre ReportesSandbox. Contexto 
 | URL de la función | `https://expensesforaptusfinancials-730085095.development.catalystserverless.com/server/expense_services` |
 | Función | `expense_services` → `functions/expense_services` |
 | Slates (2 de 3) | Captura de gastos · Calendario de gastos |
-| Estado | Función desplegada y probada (2026-11-11); apps apuntando a ella; **faltan las 2 Slates y sus dominios** |
+| Estado | Función desplegada y probada (2026-11-11); apps apuntando a ella; Slates y CORS verificados (2026-11-11); falta la prueba completa de alta, edición y borrado |
 
 ## Piezas
 
@@ -74,11 +74,11 @@ segmento `Default` (respuestas en ~0.4 s) y `AUTH_TOKEN` viaja en `.env`, igual 
 
 1. ~~Crear el proyecto y desplegar la función.~~ Hecho (2026-11-11).
 2. ~~Apuntar las dos apps a `expense_services`.~~ Hecho: `FALLBACK_API` en `src/lib/api.ts`.
-3. **Crear las 2 Slates en la consola**, ligadas a GitHub (rama `main`), framework React + Vite:
+3. ~~**Crear las 2 Slates en la consola**~~ Hecho y verificado (2026-11-11): cada dominio responde, CORS lo autoriza y el bundle usa `expense_services`, ligadas a GitHub (rama `main`), framework React + Vite:
    - `UniversalAptusExpenseEntry` → Deployment Name `universal-aptus-expenseentry`
    - `UniversalExpensesCalendar` → Deployment Name `universal-expenseentry-calendar`
    - Instalación `npm install`, build `npm run build`, salida `dist`.
-4. **Dominios autorizados** de este proyecto (CORS activado): los dos `.onslate.com` anteriores.
+4. ~~**Dominios autorizados**~~ Hecho. Ojo: el dominio debe ser el del Deployment Name, no el aleatorio (`universalexpensescal-…`) que Catalyst da por omisión. Dominios (CORS activado): los dos `.onslate.com` anteriores.
 5. Probar: listar, crear, editar y borrar un gasto de prueba.
 6. Confirmado → quitar las rutas `/gastos` y `categorias-gasto` de `time_entry_services`, volver a
    desplegarla, y limpiar los dominios de gastos del proyecto de Tiempos.
