@@ -5,16 +5,17 @@ Captura y calendario de **gastos y reembolsos** sobre ReportesSandbox. Contexto 
 
 | | |
 |---|---|
-| Proyecto de Catalyst | `ExpensesForAptusFinancials` (por crear) |
+| Proyecto de Catalyst | `ExpensesForAptusFinancials` (`247000003819090`) |
+| URL de la función | `https://expensesforaptusfinancials-730085095.development.catalystserverless.com/server/expense_services` |
 | Función | `expense_services` → `functions/expense_services` |
 | Slates (2 de 3) | Captura de gastos · Calendario de gastos |
-| Estado | Apps terminadas y probadas con datos reales; **función nueva por desplegar** |
+| Estado | Función desplegada y probada (2026-11-11); apps apuntando a ella; **faltan las 2 Slates y sus dominios** |
 
 ## Piezas
 
 | Pieza | Carpeta | Repositorio | Slate / Deployment Name |
 |---|---|---|---|
-| Función | `functions/expense_services` | `AptusExpenseServices` (por crear) | — |
+| Función | `functions/expense_services` | `AptusExpenseServices` ✓ | — |
 | Captura de gastos | `UniversalAptusExpenseEntry` | `UniversalAptusExpenseEntry` ✓ | `universal-aptus-expenseentry` |
 | Calendario de gastos | `UniversalExpensesCalendar` | `UniversalExpensesCalendar` ✓ | `universal-expenseentry-calendar` |
 
@@ -46,28 +47,41 @@ Navegación entre Slates:
 ## Configuración en Catalyst
 
 1. **Función** `expense_services` (Node 24, Advanced I/O).
-2. **Variable de entorno** `AUTH_TOKEN` (token del broker Donatello, el mismo de tiempos). Hoy la
-   función de tiempos lo lee de `.env`; `functions/expense_services/.env` ya está creado localmente
-   (no se versiona). Mejor práctica: definirlo en la consola como variable de entorno de la función.
-3. **Caché**: segmento `APTUS_MIRROR_CONN_DATA` (guarda endpoint y token de ReportesSandbox 6 h).
+2. **Variable** `AUTH_TOKEN`: viaja en `functions/expense_services/.env` (local, no se versiona),
+   igual que en Tiempos. Opcional: moverla a variable de entorno de la función en la consola.
+3. **Caché**: funciona con el segmento `Default`; no hace falta crear otro.
 4. **Dominios autorizados (CORS)**: solo las 2 Slates de este proyecto:
    `https://universal-aptus-expenseentry.onslate.com`, `https://universal-expenseentry-calendar.onslate.com`.
 5. **Slates**: build `npm run build`, salida `dist/`. Variable opcional en las dos:
    `VITE_API_BASE_URL` = URL de `expense_services` (si no se define, usan `FALLBACK_API` de
    `src/lib/api.ts`).
 
-## Migración desde el proyecto de Tiempos (pendiente)
+## Despliegue de la función con el CLI
 
-Hoy la captura de gastos está ligada al proyecto de Tiempos y usa `time_entry_services`, que
-conserva las rutas de gastos de forma **transitoria**.
+```bash
+cd 02-gastos
+catalyst project:use 247000003819090      # solo la primera vez en esta máquina
+cd functions/expense_services && npm install && npm test && cd ../..
+catalyst deploy --only functions:expense_services
+```
 
-1. Crear el proyecto, la función, la variable, el segmento de caché (pasos 1–3).
-2. Probar la función: `GET <url>/636939444/categorias-gasto` debe responder la lista.
-3. Pasar la URL de la función → se actualiza `FALLBACK_API` en las dos apps y se suben.
-4. Quitar la Slate de gastos del proyecto de Tiempos y crear las 2 Slates aquí con los mismos
-   repositorios.
-5. Dominios autorizados (paso 4) y prueba completa: listar, crear, editar y borrar un gasto de prueba.
-6. Confirmado → se quitan las rutas `/gastos` y `categorias-gasto` de `time_entry_services`.
+Verificado en vivo (2026-11-11): `clientes` (2,570), `proyectos` (13), `abogados` (13),
+`categorias-gasto` (11) y `gastos` (12) responden 200; `gastos/999999` responde el 404 JSON de la
+API; `tiempos` (fuera de la lista blanca) y rutas inexistentes responden 404. La caché funciona con el
+segmento `Default` (respuestas en ~0.4 s) y `AUTH_TOKEN` viaja en `.env`, igual que en Tiempos.
+
+## Migración desde el proyecto de Tiempos
+
+1. ~~Crear el proyecto y desplegar la función.~~ Hecho (2026-11-11).
+2. ~~Apuntar las dos apps a `expense_services`.~~ Hecho: `FALLBACK_API` en `src/lib/api.ts`.
+3. **Crear las 2 Slates en la consola**, ligadas a GitHub (rama `main`), framework React + Vite:
+   - `UniversalAptusExpenseEntry` → Deployment Name `universal-aptus-expenseentry`
+   - `UniversalExpensesCalendar` → Deployment Name `universal-expenseentry-calendar`
+   - Instalación `npm install`, build `npm run build`, salida `dist`.
+4. **Dominios autorizados** de este proyecto (CORS activado): los dos `.onslate.com` anteriores.
+5. Probar: listar, crear, editar y borrar un gasto de prueba.
+6. Confirmado → quitar las rutas `/gastos` y `categorias-gasto` de `time_entry_services`, volver a
+   desplegarla, y limpiar los dominios de gastos del proyecto de Tiempos.
 
 ## Pruebas
 
@@ -79,6 +93,6 @@ cd UniversalExpensesCalendar && npm test         # 6
 
 ## Pendientes
 
-- Desplegar `expense_services` y completar la migración (arriba).
+- Completar la migración (pasos 3 a 6 arriba).
 - Reembolsos al abogado (`POST /gastos/:id/reembolso`, `GET /reembolsos`): ver `docs/CONTEXTO_CATALYST.md` §5.1.
 - El calendario se probó con datos reales (12 gastos, incluido el #31); falta probarlo desplegado.
