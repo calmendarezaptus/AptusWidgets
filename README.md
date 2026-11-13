@@ -17,7 +17,7 @@ Aptus Widgets/
 ├─ 01-tiempos/                 PROYECTO.md · functions/time_entry_services · 2 Slates
 ├─ 02-gastos/                  PROYECTO.md · functions/expense_services · 2 Slates
 ├─ 03-honorarios-fijos/        PROYECTO.md · functions/fixed_fee_services · 2 Slates
-├─ 04-consolidado/             PROYECTO.md · functions/aptus_overview_services · (3 Slates por crear)
+├─ 04-consolidado/             PROYECTO.md · functions/aptus_overview_services · 3 Slates
 └─ _archivo/                   ZIP y bundles originales (no se versiona)
 ```
 
@@ -26,7 +26,7 @@ Aptus Widgets/
 | Tiempos | Publicado (2026-11-11): vía ReportesSandbox |
 | Gastos | En producción (2026-11-11): proyecto, función y Slates propias |
 | Honorarios fijos | En producción (2026-11-11): proyecto, función y Slates propias |
-| Consolidado | Calendario unificado publicado; liberaciones y configuración por construir |
+| Consolidado | Calendario publicado; Liberaciones y Configuración listas (faltan sus Slates) |
 
 Las carpetas de funciones y Slates son repositorios independientes y este repositorio las ignora
 (`.gitignore`).
