@@ -1,6 +1,6 @@
 # Configuración recomendada: repositorios, proyectos de Catalyst y despliegues
 
-Guía para dar de alta los 4 proyectos. Los nombres siguen el patrón de lo que ya existe
+Guía para dar de alta los 5 proyectos. Los nombres siguen el patrón de lo que ya existe
 (`TimeEntryForAptusFinancials`, `universal-aptus-timeentry`, `UniversalAptusExpenseEntry`).
 Detalle de cada proyecto en su `PROYECTO.md`.
 
@@ -21,6 +21,8 @@ Detalle de cada proyecto en su `PROYECTO.md`.
 | | | | `universal-aptus-liberaciones` | `UniversalAptusLiberaciones` |
 | | | | `universal-aptus-projectconfig` | `UniversalAptusProjectConfig` |
 | | | | | Función: `AptusOverviewServices` |
+| **Configuración** | `SettingsForAptusFinancials` | `aptus_settings_services` | `universal-aptus-lawyersettings` | `UniversalAptusLawyerSettings` |
+| | | | | Función: `AptusSettingsServices` |
 | (todos) | — | — | — | `AptusWidgets`: docs, `shared/` y los `PROYECTO.md` |
 
 El dominio de cada Slate es `https://<Deployment Name>.onslate.com`.

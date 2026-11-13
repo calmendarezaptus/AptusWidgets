@@ -2,5 +2,6 @@
   "01-tiempos/functions/time_entry_services",
   "02-gastos/functions/expense_services",
   "03-honorarios-fijos/functions/fixed_fee_services",
-  "04-consolidado/functions/aptus_overview_services"
+  "04-consolidado/functions/aptus_overview_services",
+  "05-configuracion/functions/aptus_settings_services"
 ]
