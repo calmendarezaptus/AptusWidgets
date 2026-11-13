@@ -1,8 +1,8 @@
 import { API_BASE } from './api'
 
-// Prebills en Aptus (ReportesSandbox) vía prebill_services. FASE 1: hasta "autorizada", sin
-// escribir en Books (facturar y deshacer factura no están aquí). Este archivo es igual en las dos
-// Slates del proyecto (copia de 06-prebills/shared/prebills.ts).
+// Prebills en Aptus (ReportesSandbox) vía prebill_services. FASE 2: facturar crea la factura en
+// Books (borrador), deshacer la borra, y con la factura en borrador cambiar líneas o idioma también
+// la actualiza. Este archivo es igual en las dos Slates (copia de 06-prebills/shared/prebills.ts).
 export type Estado = 'borrador' | 'en_revision' | 'autorizada' | 'facturando' | 'facturada'
 export const ESTADOS: Estado[] = ['borrador', 'en_revision', 'autorizada', 'facturada']
 export const ESTADO_LABEL: Record<Estado, string> = { borrador: 'Borrador', en_revision: 'En revisión', autorizada: 'Autorizada', facturando: 'Facturando', facturada: 'Facturada' }
@@ -11,12 +11,14 @@ export const ESTADO_CLS: Record<Estado, string> = {
   autorizada: 'bg-emerald-50 text-emerald-800 border-emerald-200', facturando: 'bg-amber-50 text-amber-800 border-amber-200',
   facturada: 'bg-violet-50 text-violet-800 border-violet-200',
 }
-// Lo que se puede hacer desde aquí en cada estado (fase 1).
+// Avances que no tocan Books. Facturar (autorizada → facturada) va aparte: crea la factura.
 export const AVANZAR: Partial<Record<Estado, { a: Estado; accion: string }>> = {
   borrador: { a: 'en_revision', accion: 'Enviar a revisión' },
   en_revision: { a: 'autorizada', accion: 'Autorizar' },
 }
 export const editable = (e: Estado) => e === 'borrador' || e === 'en_revision' || e === 'autorizada'
+// Facturada con la factura todavía en borrador en Books: líneas e idioma se pueden cambiar (y cambian la factura).
+export const editableEnBooks = (e: Estado, edicion: Edicion | null) => e === 'facturada' && edicion?.editable === true && edicion.etapa === 'factura_borrador'
 
 export interface Totales {
   subtotalHonorariosHoras: number; subtotalHonorariosFijos: number; subtotalHonorarios: number; subtotalGastos: number
@@ -142,12 +144,16 @@ export async function getListos(org: string, signal?: AbortSignal): Promise<Line
 
 export interface CreadaResult extends Prebill { ids_ignorados?: Record<string, number[]> }
 export const crearPrebill = (org: string, body: { cliente_id: string; moneda: string } & Record<string, unknown>) => write<CreadaResult>(org, 'POST', 'prebills', body)
-export const cambiarLineas = (org: string, id: number, body: Record<string, number[]>) => write<Prebill & { ids_ignorados?: Record<string, number[]> }>(org, 'PATCH', `prebills/${id}/lineas`, body)
+export const cambiarLineas = (org: string, id: number, body: Record<string, number[]>) => write<Prebill & { ids_ignorados?: Record<string, number[]>; factura_actualizada?: FacturaActualizada }>(org, 'PATCH', `prebills/${id}/lineas`, body)
 export const setDescuentoAjuste = (org: string, id: number, body: Record<string, unknown>) => write<Prebill>(org, 'PATCH', `prebills/${id}/descuento-ajuste`, body, false)
 export const setIdioma = (org: string, id: number, idioma: '' | 'es' | 'en') => write<Prebill>(org, 'PATCH', `prebills/${id}/idioma`, { idioma }, false)
 export const setTipoCambio = (org: string, id: number, tipo_cambio: number | null) => write<Prebill>(org, 'PATCH', `prebills/${id}/tipo-cambio`, { tipo_cambio }, false)
 export const avanzarEstado = (org: string, id: number, nuevo_estado: Estado) => write<Prebill>(org, 'POST', `prebills/${id}/estado`, { nuevo_estado })
 export const eliminarPrebill = (org: string, id: number) => write<unknown>(org, 'DELETE', `prebills/${id}`, undefined, false)
+// ESCRIBEN EN BOOKS
+export const facturar = (org: string, id: number) => write<Prebill>(org, 'POST', `prebills/${id}/estado`, { nuevo_estado: 'facturada' })
+export const deshacerFactura = (org: string, id: number) => write<Prebill & { factura_borrada?: unknown }>(org, 'POST', `prebills/${id}/deshacer-factura`, {})
+export interface FacturaActualizada { numero: string; subtotal_books: number; subtotal_esperado: number; cuadra: boolean }
 
 // Suma de ids ignorados por la API (para avisar que algo no entró).
 export const contarIgnorados = (ids?: Record<string, number[]>) => Object.values(ids || {}).reduce((s, l) => s + (l?.length || 0), 0)

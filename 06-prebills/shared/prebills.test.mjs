@@ -33,13 +33,17 @@ test('clientes con algo listo: sin Prebill, facturable; el cliente del gasto sal
   ])
 })
 
-test('fase 1: solo se avanza hasta autorizada; facturada no es editable', () => {
+test('avances sin Books hasta autorizada; facturada editable solo con la factura en borrador', () => {
   assert.equal(lib.AVANZAR.borrador.a, 'en_revision')
   assert.equal(lib.AVANZAR.en_revision.a, 'autorizada')
   assert.equal(lib.AVANZAR.autorizada, undefined)
   assert.equal(lib.editable('autorizada'), true)
   assert.equal(lib.editable('facturada'), false)
   assert.equal(lib.editable('facturando'), false)
+  assert.equal(lib.editableEnBooks('facturada', { editable: true, etapa: 'factura_borrador' }), true)
+  assert.equal(lib.editableEnBooks('facturada', { editable: false, etapa: 'bloqueada' }), false)
+  assert.equal(lib.editableEnBooks('facturada', null), false)
+  assert.equal(lib.editableEnBooks('autorizada', { editable: true, etapa: 'prebill' }), false)
 })
 
 test('descuento y ajuste del formulario', () => {
