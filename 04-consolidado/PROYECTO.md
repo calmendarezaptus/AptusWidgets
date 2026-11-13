@@ -38,7 +38,9 @@ que escriben en Books; alcance: datos, tarifas y responsables.
 | POST | `/:org/tarifas` | siempre con `proyecto_id`; abogado **o** nivel o ninguno |
 | PATCH / DELETE | `/:org/tarifas/:id` | solo si la tarifa es de un proyecto (si no → 403); PATCH solo `tarifa` |
 | GET | `/:org/tarifas/resolver` | `abogado_id, proyecto_id` |
-| POST | `/:org/responsables` | `{rol, nombre, proyecto_id}` (solo de proyecto) |
+| POST | `/:org/responsables` | `{rol, abogado_id, proyecto_id}`; `rol` = `facturacion`, `cobranza` o `ambos`. Solo abogados marcados para ese rol (si no → 403); el nombre sale del abogado; `ambos` solo para generales |
+| GET | `/:org/abogados-responsables` | `[{abogado_id, tipo}]` desde el Data Store |
+| PATCH | `/:org/abogados/:id/responsable` | `{tipo}`: `facturacion`, `cobranza`, `general` o `null` (quitar). El abogado debe existir en Aptus |
 | DELETE | `/:org/responsables/:id` | solo asignaciones de proyecto (las de cliente → 403) |
 | GET | `/:org/responsables/resolver` | `proyecto_id` |
 | GET | `/:org/impuestos`, `/:org/clientes/:cliente/config` | IVA de Books y del cliente (lectura) |
@@ -66,16 +68,27 @@ sin escribir.
 1. Función `aptus_overview_services` (Node 24, Advanced I/O).
 2. Variable `AUTH_TOKEN`: viaja en `.env` (local, no se versiona), igual que en las otras áreas.
 3. Caché: funciona con el segmento `Default`.
-4. Dominios autorizados: las 3 Slates de este proyecto (`universal-aptus-calendar`,
+4. **Data Store**, tabla `AbogadosResponsables` (quién puede ser responsable; ReportesSandbox no tiene
+   ese dato). Columnas:
+
+   | Columna | Tipo | Obligatoria |
+   |---|---|---|
+   | `organization_id` | Var Char (30) | sí |
+   | `abogado_id` | BigInt | sí |
+   | `tipo` | Var Char (20) | sí — `facturacion`, `cobranza` o `general` |
+
+   Permisos de la tabla: la función usa el SDK como admin, no hacen falta permisos de usuario.
+   Sin la tabla, la pantalla avisa "Falta la tabla AbogadosResponsables…" y no deja marcar ni asignar.
+5. Dominios autorizados: las 3 Slates de este proyecto (`universal-aptus-calendar`,
    `universal-aptus-liberaciones`, `universal-aptus-projectconfig` `.onslate.com`).
 
 ## Pruebas
 
 ```bash
-cd functions/aptus_overview_services && npm test  # 13
+cd functions/aptus_overview_services && npm test  # 16
 cd UniversalAptusCalendar && npm test              # 5
 cd UniversalAptusLiberaciones && npm test          # 4
-cd UniversalAptusProjectConfig && npm test         # 4
+cd UniversalAptusProjectConfig && npm test         # 5
 ```
 
 ## Pendientes
@@ -90,5 +103,9 @@ cd UniversalAptusProjectConfig && npm test         # 4
 3. ~~Configuración del proyecto~~ Hecha (2026-11-13): datos (solo cambios), tarifas del proyecto,
    qué tarifa aplicaría y responsables. Probada con el proyecto 23 sin escribir. **Falta su Slate**
    `universal-aptus-projectconfig` y el dominio en CORS.
-4. Prueba completa del usuario: liberar un periodo de un cliente; cambiar un dato, agregar/editar/borrar
+4. Abogados responsables (2026-11-13, pedido del usuario): los responsables son abogados registrados y
+   en cada abogado se indica si puede ser de facturación, de cobranza o general (ambos). Pestaña
+   "Abogados responsables" en Configuración; al asignar solo aparecen los marcados para ese rol, y un
+   general se puede asignar a ambos roles a la vez. **Falta crear la tabla** del Data Store.
+5. Prueba completa del usuario: liberar un periodo de un cliente; cambiar un dato, agregar/editar/borrar
    una tarifa y un responsable de prueba.
