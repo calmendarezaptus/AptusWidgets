@@ -29,7 +29,7 @@ Aptus Widgets/
 | Gastos | En producción (2026-11-11): proyecto, función y Slates propias |
 | Honorarios fijos | En producción (2026-11-11): proyecto, función y Slates propias |
 | Consolidado | Publicado (2026-11-13): calendario, Liberaciones y Configuración del proyecto |
-| Configuración | Publicado (2026-11-13): Configuración de abogados |
+| Configuración | Publicado (2026-11-13): Configuración de abogados; Configuración del despacho (falta su Slate) |
 | Prebills | Publicado (2026-11-13): lista, nueva y detalle; facturar y deshacer en Books (fase 2) |
 
 Las carpetas de funciones y Slates son repositorios independientes y este repositorio las ignora
