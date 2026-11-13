@@ -8,17 +8,18 @@ Endpoints JSON del backend de captura de tiempos (con su tarea), gastos y honora
 |---|---|
 | Base URL | /reportes/sandbox-wip/api |
 | Autenticación | ?token=… en la URL |
-| Actualizado | 2026-11-04 |
+| Actualizado | 2026-11-13 |
 | Formato | JSON (form-urlencoded también aceptado); /formatos: PDF, HTML, TXT |
 | Escritura real en Books | Cada tiempo (time entry) · Invoice al facturar · tareas |
 
-> Documento generado desde la referencia publicada de la Prebill API (versión del 2026-11-04) para tenerla a la mano en un proyecto nuevo.
+> Documento generado desde la referencia publicada de la Prebill API (versión del 2026-11-13) para tenerla a la mano en un proyecto nuevo.
 
 ## Contenido
 
 - [Autenticación](#autenticacion)
 - [Convenciones](#convenciones)
 - [Referencias de Zoho en cada respuesta](#zoho-refs)
+- [Cambios del 2026-11-13](#novedades-1113)
 - [Cambios del 2026-11-04](#novedades-1104)
 - [Cambios del 2026-10-12](#novedades-1012)
 - [Cambios del 2026-10-05](#novedades-1005)
@@ -107,9 +108,10 @@ Cualquier fallo responde con el status HTTP correspondiente y un cuerpo `{ "erro
 |  |  |
 |---|---|
 | [400] | Faltan campos requeridos o un valor no es válido. El mensaje dice cuál y qué llegó, ej. `"horas debe ser mayor que 0; llegó -3"`. Ver [reglas de validación](#validacion). |
+| [403] | El abogado no está marcado para ese rol de responsable (ver [Responsables](#responsables)). |
 | [404] | El recurso (o el id dentro de la ruta) no existe. |
 | [409] | La operación es válida en general pero no en el estado actual del recurso — ver [reglas de eliminar](#reglas-eliminar) y [máquina de estados](#maquina-estados). También al capturar un tiempo si el proyecto o el abogado no están enlazados a Books (ver [Respaldo en Books](#respaldo-books)). |
-| [422] | No hay tarifa para ese abogado en la moneda del proyecto en ningún nivel de la [jerarquía](#jerarquia). El tiempo no se guarda; el mensaje dice qué falta. |
+| [422] | No hay tarifa para ese abogado en la moneda del proyecto en ningún nivel de la [jerarquía](#jerarquia). El tiempo no se guarda; el mensaje dice qué falta. También al asignar como responsable a un abogado inactivo. |
 | [502] | Un `sincronizar-zoho` no pudo leer de Books (sin respuesta, o el user/project enlazado ya no existe); un `/tiempos/:id/respaldar` que no logró respaldar; o un `DELETE /tiempos/:id` que Books no dejó borrar (entonces tampoco se borra aquí). |
 | [500] | Error inesperado (por ejemplo, Books no respondió al crear la Invoice). |
 
@@ -134,6 +136,19 @@ Vínculos opcionales a Zoho que se pueden establecer y que luego se propagan:
 | tiempos | `zoho_time_entry_id` → el time entry de Books donde está respaldado; `zoho_task_id` → la tarea del Project de Books (el `task_id` del time entry), con su nombre en `tarea`. Ver [Tiempos](#tiempos) y [Respaldo en Books](#respaldo-books). |
 | tiempos / gastos | arrastran `proyecto_zoho_id` / `proyecto_zoho_nombre` / `proyecto_zoho_codigo` (y `abogado_zoho_user_id` en tiempos) del proyecto/abogado al que pertenecen. |
 
+<a id="novedades-1113"></a>
+
+## Cambios del 2026-11-13
+
+**Los responsables capturados aquí (fuente `local`) solo pueden ser abogados registrados y activos, y solo si en el abogado se marcó que pueden serlo.** Las fuentes que vienen de Books (`campo_cliente`, `rol_proyecto`) no cambian. No hay rutas nuevas.
+
+| Tema | Qué cambió |
+|---|---|
+| Abogados  *(nuevo)* | Campo `responsable`: `null` (no puede ser responsable, omisión) \| `facturacion` \| `cobranza` \| `general` (los dos roles). Sale en `GET /abogados` y `GET /abogados/:id`; se fija en `POST /abogados` y `PATCH /abogados/:id` (vacío o `null` lo quita; otro valor → [400]). En la web: "Puede ser responsable" en Abogados. |
+| POST /responsables  *(cambia)* | Pide `abogado_id` en lugar de `nombre`; **ya no se aceptan nombres libres** ([400]). Abogado inexistente [404], inactivo [422], sin la marca del rol [403]. El nombre guardado es el del abogado (`zoho_user_nombre`, si no `nombre`). Nuevo `rol: "ambos"` para abogados `general`. |
+| GET /responsables | Cada asignación trae `abogado_id` (`null` en las de nombre libre anteriores) y `abogado_cubre_rol`. |
+| Quitar la marca | **No borra** las asignaciones del abogado: siguen contando en `/responsables/resolver` hasta que se borren con `DELETE /responsables/:id`. `abogado_cubre_rol` pasa a `false`. |
+
 <a id="novedades-1104"></a>
 
 ## Cambios del 2026-11-04
@@ -142,7 +157,7 @@ Vínculos opcionales a Zoho que se pueden establecer y que luego se propagan:
 
 | Tema | Qué cambió |
 |---|---|
-| Formatos  (nuevo) | Recurso [`/formatos`](#formatos): catálogo, `/formatos/prebill/:id`, `/formatos/factura/:prebill_id` (o `?invoice_id=`), `/formatos/estado-cuenta?cliente_id=` y `/formatos/ledes/:prebill_id`. Solo `GET`. |
+| Formatos  *(nuevo)* | Recurso [`/formatos`](#formatos): catálogo, `/formatos/prebill/:id`, `/formatos/factura/:prebill_id` (o `?invoice_id=`), `/formatos/estado-cuenta?cliente_id=` y `/formatos/ledes/:prebill_id`. Solo `GET`. |
 | Salida | Por omisión la API responde el **PDF** (LEDES: texto). `salida=html` o `salida=json` para los datos; `descargar=1` lo manda como archivo adjunto. |
 | Configuración | Nueva sección `formatos` en [`/config-despacho`](#formato-membrete): membrete, cuentas bancarias por moneda, ciudad, firma, formato de Prebill por omisión y los campos de Books con la razón social y el RFC del cliente. |
 | Rendimiento | Las listas de Books (clientes, proyectos, facturas, usuarios, impuestos, artículos) responden con la copia guardada y se renuevan en segundo plano; puede verse lo de hace unos minutos. Nueva `GET /caches`: edad, última descarga y errores de cada copia. Las respuestas JSON bajo `/reportes/` se comprimen con gzip si el cliente lo pide (`/clientes`: 510 KB → 69 KB). |
@@ -156,11 +171,11 @@ Vínculos opcionales a Zoho que se pueden establecer y que luego se propagan:
 
 | Tema | Qué cambió |
 |---|---|
-| Captura  (cambia) | Para capturar un tiempo, el proyecto debe estar enlazado a un proyecto de Books y el abogado a un usuario activo de Books; si no, [409]. La **tarea es obligatoria** ([400]). Antes ninguna de las dos cosas se pedía. El usuario de Books se puede volver opcional por despacho (`respaldo.exigir_usuario_books`). |
+| Captura  *(cambia)* | Para capturar un tiempo, el proyecto debe estar enlazado a un proyecto de Books y el abogado a un usuario activo de Books; si no, [409]. La **tarea es obligatoria** ([400]). Antes ninguna de las dos cosas se pedía. El usuario de Books se puede volver opcional por despacho (`respaldo.exigir_usuario_books`). |
 | Proyectos en Books | Nueva [`POST /proyectos/:id/crear-en-books`](#proyectos): crea en Books el proyecto de un proyecto local, con la numeración del cliente, y lo enlaza. Los 13 proyectos del sandbox ya tienen ID de Books. |
 | Respaldo | Al crear, editar o borrar un tiempo aquí, se crea, actualiza o borra en Books. Si la tarea no existe en el proyecto de Books, se crea ahí. Si Books falla, el tiempo se guarda como `pendiente` y se reintenta (cron nocturno 23:15, botón o API). Ver [Respaldo en Books](#respaldo-books). |
 | ID de Books | Cada tiempo trae `zoho_time_entry_id` (también en `zoho_id`), `books_estado`, `books_error`, `books_sincronizado_en` y `books_aprobacion`. `GET /tiempos` acepta `?books_estado=`. |
-| Factura | Tres modos por despacho: `concepto` (resumida), `tarea`  (nuevo) (una línea de honorarios por tarea) y `detallado` (una por tiempo). En los tres, cada línea de honorarios lleva los `time_entry_ids` de sus tiempos, así Books los marca como facturados. Ver [Cómo se arma la factura](#factura). |
+| Factura | Tres modos por despacho: `concepto` (resumida), `tarea`  *(nuevo)* (una línea de honorarios por tarea) y `detallado` (una por tiempo). En los tres, cada línea de honorarios lleva los `time_entry_ids` de sus tiempos, así Books los marca como facturados. Ver [Cómo se arma la factura](#factura). |
 | Bloqueos nuevos | No se factura con tiempos `pendiente` de respaldo ni con tiempos que esperan aprobación de horas en Books. |
 | Proyectos | Enlazar un proyecto a un proyecto de Books de **otro cliente** ahora responde [400]. |
 | Datos de prueba | Los tiempos `[DEMO]` no se mandan a Books (`books_estado = "no_aplica"`). |
@@ -308,11 +323,12 @@ Catálogo propio — **no crea Usuarios reales en Books** (evita disparar invita
   "foto_url": "https://contacts.zoho.com/file?t=user&ID=637497560&fs=thumb",
   "zoho_user_nombre": "Carolina Litter",
   "zoho_user_email": "carolina.litter@aptus-legal.com.mx",
-  "zoho_user_status": "inactive"
+  "zoho_user_status": "inactive",
+  "responsable": "general"
 }]
 ```
 
-`tarifas_base` es lo que se cobra por moneda cuando el proyecto/cliente no tiene tarifa especial: la propia, si no la de su nivel, si no la general. `avisos_tarifa` dice en qué moneda requerida no tiene ninguna (ej. `"Sin tarifa asignada en USD (ni propia, ni de su nivel, ni general)"`): ese abogado recibirá [422] al capturar en esa moneda. `tarifa_propia` = la propia en MXN, por compatibilidad. `email` es el efectivo; `zoho_user_email` el crudo del User.
+`responsable`: si puede ser responsable de facturación o cobranza (ver [Responsables](#responsables)); `null` = no. `tarifas_base` es lo que se cobra por moneda cuando el proyecto/cliente no tiene tarifa especial: la propia, si no la de su nivel, si no la general. `avisos_tarifa` dice en qué moneda requerida no tiene ninguna (ej. `"Sin tarifa asignada en USD (ni propia, ni de su nivel, ni general)"`): ese abogado recibirá [422] al capturar en esa moneda. `tarifa_propia` = la propia en MXN, por compatibilidad. `email` es el efectivo; `zoho_user_email` el crudo del User.
 
 #### `POST /abogados`
 
@@ -329,12 +345,13 @@ Catálogo propio — **no crea Usuarios reales en Books** (evita disparar invita
 | zoho_user_id | string | opcional — `user_id` de Books; se cachean foto, nombre, status y correo |
 | foto_url | string | opcional — gana sobre la del User de Books |
 | email | string | opcional — gana sobre el del User de Books |
+| responsable | string | opcional — `facturacion` \| `cobranza` \| `general` \| vacío/`null` (omisión: no puede ser responsable). Otro valor: [400] |
 
 #### `GET /abogados/:id`
 
-#### `PATCH /abogados/:id` — nombre / tipo_id / tarifa_propia_* / activo / zoho_user_id / foto_url / email
+#### `PATCH /abogados/:id` — nombre / tipo_id / tarifa_propia_* / activo / zoho_user_id / foto_url / email / responsable
 
-Una `tarifa_propia_*` vacía quita esa tarifa propia (vuelve a la de su nivel). Mandar `zoho_user_id` (aunque sea vacío para desenlazar) re-resuelve foto/nombre/status/correo desde Books.
+Una `tarifa_propia_*` vacía quita esa tarifa propia (vuelve a la de su nivel). Mandar `zoho_user_id` (aunque sea vacío para desenlazar) re-resuelve foto/nombre/status/correo desde Books. `responsable`: mismos valores que en el alta; vacío o `null` quita la marca, omitido no la toca. **Quitar la marca no borra sus asignaciones** de responsable (siguen contando hasta que se borren a mano).
 
 #### `POST /abogados/:id/sincronizar-zoho` — refresca foto/nombre/status/correo del User enlazado
 
@@ -618,7 +635,7 @@ No afecta tiempos ya capturados: su tarifa quedó congelada en `tarifa_aplicada`
 
 Catálogo único de tareas para **todos** los proyectos (14 iniciales: asesoría, investigación, contratos, corporativo, trámites, juntas y 5 etapas de litigio, más una de administración interna no facturable). `codigo_utbms` es la referencia opcional al estándar UTBMS (ABA/LEDES). Una tarea con `facturable: 0` hace que sus tiempos nazcan como no cobrables.
 
-#### `GET /tareas-estandar` — activos; ?todos incluye inactivos
+#### `GET /tareas-estandar` — activos; `?todos` incluye inactivos
 
 *Respuesta 200*
 
@@ -654,7 +671,7 @@ Catálogo único de tareas para **todos** los proyectos (14 iniciales: asesoría
 
 Catálogo de categorías para clasificar gastos (11 iniciales: copias, mensajería, derechos y aranceles, notario, peritos, viáticos…), con su código UTBMS de gastos (E1xx) opcional. Cada categoría tiene un `tipo` por defecto para sus gastos: `gasto` o `reembolso` (iniciales como reembolso: derechos y aranceles, notario).
 
-#### `GET /categorias-gasto` — activos; ?todos incluye inactivos
+#### `GET /categorias-gasto` — activos; `?todos` incluye inactivos
 
 *Respuesta 200*
 
@@ -1283,9 +1300,9 @@ Lo mismo que se ve en la vista previa es lo que se manda a Books. Hay tres forma
 | Regla | Detalle |
 |---|---|
 | `concepto` — resumida (omisión) | Una línea por concepto: HONORARIOS = suma de todos los tiempos; HONORARIOS FIJOS; GASTOS; REEMBOLSOS. Con el artículo de Books del idioma de la factura. |
-| `tarea` — por tarea  (nuevo) | Como la resumida, pero los honorarios van en **una línea por tarea**, con sus horas sumadas: `"Prebill #9 -- Asesoría y consulta -- 3.5 h"`. Gastos, fijos y reembolsos siguen en una línea por concepto. Un tiempo sin tarea (anterior) va en "Sin tarea". |
+| `tarea` — por tarea  *(nuevo)* | Como la resumida, pero los honorarios van en **una línea por tarea**, con sus horas sumadas: `"Prebill #9 -- Asesoría y consulta -- 3.5 h"`. Gastos, fijos y reembolsos siguen en una línea por concepto. Un tiempo sin tarea (anterior) va en "Sin tarea". |
 | `detallado` — por cada tiempo | Una línea por cada tiempo, gasto, reembolso y cargo fijo, con la descripción `" : 02 sep 2026 : texto"`. Un tiempo va como cantidad = horas y precio = tarifa (si Books lo puede representar exacto con 2 decimales; si no, 1 × importe). El ajuste va en una línea aparte, "Ajuste de honorarios" ("Fee adjustment"), una por cada IVA. Con `lineas_detalladas = "sin_articulo"` las líneas van sin artículo (con `name`) y no se bloquea por artículos faltantes. |
-| Ligada a los tiempos de Books  (nuevo) | Cada línea de honorarios lleva `time_entry_ids` (arreglo) y `project_id`; Books marca esos tiempos como facturados y los desmarca si se deshace la factura. Books solo acepta tiempos de **un** proyecto por línea, así que si la Prebill tiene tiempos de varios proyectos de Books, los honorarios se parten por proyecto (con el nombre del proyecto en la descripción). |
+| Ligada a los tiempos de Books  *(nuevo)* | Cada línea de honorarios lleva `time_entry_ids` (arreglo) y `project_id`; Books marca esos tiempos como facturados y los desmarca si se deshace la factura. Books solo acepta tiempos de **un** proyecto por línea, así que si la Prebill tiene tiempos de varios proyectos de Books, los honorarios se parten por proyecto (con el nombre del proyecto en la descripción). |
 | Idioma | Lo más específico gana: el elegido para esta Prebill (`PATCH /prebills/:id/idioma`), si no el configurado para el cliente, si no el del cliente en Books. |
 | IVA | El del proyecto, si no el del cliente. Aplica a todo menos REEMBOLSOS. En el formato por concepto, si hay proyectos con IVA distinto, ese concepto se parte en una línea por IVA. |
 | Descuento / ajuste | Solo sobre honorarios y honorarios fijos, repartido en proporción; el descuento va por línea antes de impuestos. El ajuste se suma a las líneas en el formato por concepto y va en línea aparte en el detallado. |
@@ -1463,7 +1480,9 @@ Cada rol tiene una lista de fuentes que se prueban en orden; gana la primera que
 |---|---|---|
 | campo_cliente | `campo`, ej. `cf_analista_de_facturaci_n` | Campo personalizado del contacto en Books (así trabaja este sandbox). |
 | rol_proyecto | `rol`, ej. `Admin Firm` | Usuarios de Books con ese rol en el Project enlazado al proyecto (así trabaja EC Legal). Sin mayúsculas/minúsculas. Una llamada a Books por proyecto, caché de 30 min. |
-| local | — | Asignaciones capturadas aquí; la de proyecto le gana a la de cliente. |
+| local | — | Asignaciones capturadas aquí; la de proyecto le gana a la de cliente. Solo abogados marcados (ver abajo). |
+
+> **Quién puede ser responsable local (2026-11-13).** Solo un abogado registrado, activo y con `responsable` marcado en [Abogados](#abogados): `facturacion` cubre facturación, `cobranza` cubre cobranza y `general` cubre los dos. Se guarda el nombre que muestra `GET /abogados` (`zoho_user_nombre`, si no `nombre`). Quitarle la marca después no borra sus asignaciones: siguen contando en el resolver hasta que se borren. Las fuentes `campo_cliente` y `rol_proyecto` vienen de Books y no se filtran.
 
 #### `GET /responsables/resolver` — ?cliente_id=&proyecto_id= — quién es responsable
 
@@ -1480,18 +1499,66 @@ Al menos uno de los dos parámetros ([400] sin ninguno); con solo `proyecto_id` 
 
 #### `GET /responsables` — asignaciones locales
 
+*Respuesta 200*
+
+```json
+[{
+  "id": 4, "rol": "cobranza", "cliente_id": "446794000015629019", "proyecto_id": null,
+  "nombre": "AM - Alberti Martinolli", "abogado_id": 6, "abogado_cubre_rol": true,
+  "creado_en": "2026-11-13T18:05:12.000Z",
+  "proyecto_nombre": null, "proyecto_cliente_nombre": null,
+  "zoho_id": null, "cliente_zoho_id": "446794000015629019", "status": "activo"
+}]
+```
+
+`abogado_id` es `null` en las asignaciones de nombre libre anteriores al 2026-11-13. `abogado_cubre_rol`: `true` si el abogado sigue activo y marcado para ese rol, `false` si ya no (la asignación sigue contando), `null` sin abogado.
+
 #### `POST /responsables` — asigna a un cliente o a un proyecto
 
 **Body**
 
 | Campo | Tipo | Notas |
 |---|---|---|
-| rol | string | requerido — `facturacion` \| `cobranza` |
-| nombre | string | requerido |
+| rol | string | requerido — `facturacion` \| `cobranza` \| `ambos` (solo abogados `general`) |
+| abogado_id | integer | requerido — abogado activo y marcado para el rol |
 | cliente_id | string | contact_id de Books |
 | proyecto_id | number | gana sobre cliente_id; el cliente se toma del proyecto |
 
-Uno de `cliente_id` o `proyecto_id` es obligatorio. [404] si el proyecto no existe; [409] si la misma asignación ya existe.
+**Respuestas**
+
+| Status | Cuándo |
+|---|---|
+| [201] | Creada. Con un rol responde la asignación; con `ambos`, `{ "rol": "ambos", "asignaciones": […] }` con las dos, y `ya_existia: true` en la que ya estaba (no es error). |
+| [400] | Rol inválido, sin `abogado_id` (también si mandas `nombre`: ya no se aceptan nombres libres), `abogado_id` no entero, o sin `cliente_id` ni `proyecto_id`. |
+| [403] | El abogado no está marcado, o su marca no cubre el rol (ej. `facturacion` pedido como cobranza, o `ambos` sin ser `general`). |
+| [404] | El abogado o el proyecto no existe. |
+| [422] | El abogado está inactivo. |
+| [409] | La asignación ya existe (mismo rol, cliente/proyecto y abogado o nombre). Con `ambos`, solo si ya existían las dos. |
+
+*curl — un abogado general en los dos roles*
+
+```bash
+curl -X POST ".../api/responsables?token=<token>" -H "Content-Type: application/json" \
+  -d '{"rol":"ambos","abogado_id":6,"cliente_id":"446794000015629019"}'
+```
+
+*Respuesta 201*
+
+```json
+{
+  "rol": "ambos",
+  "asignaciones": [
+    { "id": 3, "rol": "cobranza", "nombre": "AM - Alberti Martinolli", "abogado_id": 6, "ya_existia": false, /* … */ },
+    { "id": 2, "rol": "facturacion", "nombre": "AM - Alberti Martinolli", "abogado_id": 6, "ya_existia": true, /* … */ }
+  ]
+}
+```
+
+*Respuesta 403*
+
+```json
+{ "error": "Prueba Email QA está marcado como \"Solo facturación\"; no puede ser responsable de cobranza. Cámbialo en Abogados (\"Puede ser responsable\")." }
+```
 
 #### `DELETE /responsables/:id` — borra la asignación
 
@@ -1551,7 +1618,7 @@ Con el proveedor `creator` los CFDI se guardan en caché 60 min; `?forzar=1` vue
 
 #### `GET /cfdi/:id`
 
-#### `PATCH /cfdi/:id` — mismos campos; ej. {"estado":"cancelado"}
+#### `PATCH /cfdi/:id` — mismos campos; ej. `{"estado":"cancelado"}`
 
 #### `DELETE /cfdi/:id` — borra el registro
 
@@ -1724,7 +1791,7 @@ No todo se borra igual, a propósito:
 | tarifas | borra la fila | nunca — la tarifa ya usada quedó congelada en el tiempo |
 | tiempos / gastos / cargos-fijos | borra la fila (también desde la web, en "Ver, editar y borrar lo capturado"); un tiempo respaldado se borra primero en Books | ya `facturado`, o ya asignado a una Prebill; un tiempo, también si Books no deja borrarlo ([502]) |
 | prebills | borra la fila, libera sus líneas | el estado no es `borrador` |
-| responsables | borra la asignación | nunca |
+| responsables | borra la asignación (quitarle la marca al abogado **no** la borra) | nunca |
 | cfdi | borra el registro interno (no toca ningún CFDI real) | nunca |
 
 El porqué del soft-delete en Abogados/Proyectos: `tiempos`/`gastos`/`tarifas` los referencian con una columna obligatoria — borrar la fila de verdad dejaría huérfano ese historial.
@@ -1835,4 +1902,4 @@ curl -X POST ".../api/prebills/6/estado?token=<token>" -d 'nuevo_estado=facturad
 
 ---
 
-Prototipo del Escenario 3 de PLAN\_MULTI\_CLIENTE.md · ReportesSandbox, no es un servicio de producción · código en `apiRoutes.js` / `prebillLogic.js` / `facturacion.js` / `tarifas.js` / `catalogos.js` / `configDespacho.js` / `responsables.js` / `cfdi.js` / `respaldoBooks.js` / `formatos.js` / `pantallasFormatos.js` · actualizado 2026-11-04
+Prototipo del Escenario 3 de PLAN_MULTI_CLIENTE.md · ReportesSandbox, no es un servicio de producción · código en `apiRoutes.js` / `prebillLogic.js` / `facturacion.js` / `tarifas.js` / `catalogos.js` / `configDespacho.js` / `responsables.js` / `cfdi.js` / `respaldoBooks.js` / `formatos.js` / `pantallasFormatos.js` · actualizado 2026-11-13
