@@ -8,8 +8,8 @@ proyecto propio, con las 4 cosas.
 
 | | |
 |---|---|
-| Proyecto de Catalyst | `SettingsForAptusFinancials` (**por crear**) |
-| URL de la función | `https://settingsforaptusfinancials-730085095.development.catalystserverless.com/server/aptus_settings_services` (confirmar al crear el proyecto) |
+| Proyecto de Catalyst | `SettingsForAptusFinancials` (`247000003819350`) |
+| URL de la función | `https://settingsforaptusfinancials-730085095.development.catalystserverless.com/server/aptus_settings_services` |
 | Función | `aptus_settings_services` → `functions/aptus_settings_services` |
 | Slates (1 de 3) | Configuración de abogados. Quedan 2 lugares para niveles, tarifas generales, etc. |
 | Tema | Esmeralda |
@@ -18,8 +18,8 @@ proyecto propio, con las 4 cosas.
 
 | Pieza | Carpeta | Repositorio | Slate / Deployment Name |
 |---|---|---|---|
-| Función | `functions/aptus_settings_services` | `AptusSettingsServices` (por crear) | — |
-| Configuración de abogados | `UniversalAptusLawyerSettings` | `UniversalAptusLawyerSettings` (por crear) | `universal-aptus-lawyersettings` |
+| Función | `functions/aptus_settings_services` | `AptusSettingsServices` ✓ | — |
+| Configuración de abogados | `UniversalAptusLawyerSettings` | `UniversalAptusLawyerSettings` ✓ | `universal-aptus-lawyersettings` |
 
 Configuración del proyecto (Consolidado) enlaza aquí desde "Asignar responsable", y sigue leyendo la
 marca con su propia función (`GET /abogados-responsables`, solo lectura).
@@ -64,7 +64,9 @@ cd UniversalAptusLawyerSettings && npm test        # 3
 
 ## Pendientes
 
-1. Crear el proyecto, los 2 repositorios, la Slate y el dominio en CORS → desplegar y verificar.
+1. ~~Proyecto, repositorios y función~~ Hecho (2026-11-13): función desplegada; en vivo responden abogados,
+   niveles, responsables y los usuarios de Books (200); un campo no permitido → 400 y un usuario de Books
+   inexistente → 422, sin escribir. **Falta la Slate** `universal-aptus-lawyersettings` y su dominio en CORS.
 2. Al quedar publicada: desplegar `aptus_overview_services` y subir Configuración del proyecto sin la
    pestaña (ya hecho en local).
 3. Prueba del usuario: cambiar nivel, tarifa propia y enlace de un abogado de prueba; marcar y quitar
