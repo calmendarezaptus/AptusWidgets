@@ -76,7 +76,7 @@ cd UniversalAptusPrebillDetail && npm test   # 5
    revisión, autorizar; crear otra y eliminarla.
 4. ~~Fase 2~~ Hecha (2026-11-13): función desplegada; en vivo, facturar una facturada, deshacer una no
    facturada y editar o deshacer la #7 (factura vencida en Books) se rechazan sin escribir. Pantalla con
-   "Facturar en Books" y "Deshacer factura". **Falta la primera factura de prueba del usuario.**
-5. Que la liberación sea la aprobación de horas: la API de Books no permite aprobarlas. Recomendado:
-   quitar la aprobación de horas a los proyectos de Books que la tienen y que ReportesSandbox avise al
-   liberar tiempos que la necesitan.
+   "Facturar en Books" y "Deshacer factura". Prueba del usuario terminada (2026-11-13).
+5. ~~Liberación = aprobación de horas~~ Decidido por el usuario (2026-11-13): los proyectos de Books se
+   declaran sin aprobación de horas y el usuario irá quitándosela a los que la tienen. La vista previa
+   de factura sigue bloqueando si queda alguno sin aprobar.
