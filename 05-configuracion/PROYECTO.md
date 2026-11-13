@@ -66,8 +66,9 @@ cd UniversalAptusLawyerSettings && npm test        # 3
 
 1. ~~Proyecto, repositorios y función~~ Hecho (2026-11-13): función desplegada; en vivo responden abogados,
    niveles, responsables y los usuarios de Books (200); un campo no permitido → 400 y un usuario de Books
-   inexistente → 422, sin escribir. **Falta la Slate** `universal-aptus-lawyersettings` y su dominio en CORS.
-2. Al quedar publicada: desplegar `aptus_overview_services` y subir Configuración del proyecto sin la
-   pestaña (ya hecho en local).
+   inexistente → 422, sin escribir. Slate y CORS verificados: la Slate publicada carga
+   los 13 abogados y los usuarios de Books en Chrome, sin errores ni escrituras.
+2. ~~Consolidado sin la pestaña~~ Hecho: `aptus_overview_services` desplegada (la marca solo se lee ahí) y
+   Configuración del proyecto subida con el enlace a esta pantalla.
 3. Prueba del usuario: cambiar nivel, tarifa propia y enlace de un abogado de prueba; marcar y quitar
    responsable; desactivar y reactivar.

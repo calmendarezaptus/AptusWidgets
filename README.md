@@ -28,7 +28,7 @@ Aptus Widgets/
 | Gastos | En producción (2026-11-11): proyecto, función y Slates propias |
 | Honorarios fijos | En producción (2026-11-11): proyecto, función y Slates propias |
 | Consolidado | Publicado (2026-11-13): calendario, Liberaciones y Configuración del proyecto |
-| Configuración | Lista en local (2026-11-13): Configuración de abogados; falta crear el proyecto |
+| Configuración | Publicado (2026-11-13): Configuración de abogados |
 
 Las carpetas de funciones y Slates son repositorios independientes y este repositorio las ignora
 (`.gitignore`).
