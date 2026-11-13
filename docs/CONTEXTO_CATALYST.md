@@ -340,7 +340,7 @@ Respuesta de error de Catalyst: `{ error, stage, outcome_unknown }` (mismo contr
 | 3 | ¿Dónde vive el token de la API? | `cm_global_vars` + Catalyst Cache (sección 7). |
 | 4 | ¿La UI usa IDs de Books o IDs locales? | IDs locales en pantallas nuevas (sección 6). |
 | 5 | ¿Cronómetro y `begin/end_time`? | La API solo recibe horas; convertir en la UI o pedir cambio en ReportesSandbox. |
-| 6 | Autenticación por usuario | Hoy quien tenga el token opera todo (prototipo). Catalyst debería validar que la petición viene del widget (pendiente). |
+| 6 | ~~Autenticación por usuario~~ | **Resuelta (2026-11-13, decisión del usuario):** las URLs de las funciones y las Slates no se publican; se abren como pestañas web dentro de Books, y Books restringe por usuario la vista y el uso de esas pestañas, con el acceso guiado por cliente. Las funciones siguen sin validar quién llama: quien tenga la URL puede operar, así que las URLs no deben compartirse fuera de Books. |
 | 7 | ~~¿Pantallas nuevas en una Slate nueva o dentro de las existentes?~~ | **Resuelta (2026-11-10):** una Slate por pantalla, máximo 3 por proyecto de Catalyst (§1.1). |
 | 8 | Borrado desde el calendario | Agregar `DELETE /:org/tiempos/:id` (vía `DELETE /api/tiempos/:id` de ReportesSandbox, que borra también en Books) y que la UI deje de tratar 404 como éxito. |
 

@@ -1,0 +1,9 @@
+{
+  "functions": {
+    "targets": [
+      "prebill_services"
+    ],
+    "ignore": [],
+    "source": "functions"
+  }
+}
