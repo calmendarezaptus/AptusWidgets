@@ -13,8 +13,8 @@ estado. Contexto: `docs/CONTEXTO_CATALYST.md` §5.5 y `docs/prebill-api.md` (Pre
 
 | | |
 |---|---|
-| Proyecto de Catalyst | `PrebillsForAptusFinancials` (**por crear**) |
-| URL de la función | `https://prebillsforaptusfinancials-730085095.development.catalystserverless.com/server/prebill_services` (confirmar al crear) |
+| Proyecto de Catalyst | `PrebillsForAptusFinancials` (`247000003819406`) |
+| URL de la función | `https://prebillsforaptusfinancials-730085095.development.catalystserverless.com/server/prebill_services` |
 | Función | `prebill_services` → `functions/prebill_services` |
 | Slates (2 de 3) | Prebills (lista y crear) · Detalle de la Prebill. Queda 1 lugar (formatos imprimibles) |
 | Tema | Coral |
@@ -23,15 +23,16 @@ estado. Contexto: `docs/CONTEXTO_CATALYST.md` §5.5 y `docs/prebill-api.md` (Pre
 
 | Pieza | Carpeta | Repositorio | Slate / Deployment Name |
 |---|---|---|---|
-| Función | `functions/prebill_services` | `AptusPrebillServices` (por crear) | — |
-| Prebills (lista y crear) | `UniversalAptusPrebills` | `UniversalAptusPrebills` (por crear) | `universal-aptus-prebills` |
-| Detalle de la Prebill | `UniversalAptusPrebillDetail` | `UniversalAptusPrebillDetail` (por crear) | `universal-aptus-prebilldetail` |
+| Función | `functions/prebill_services` | `AptusPrebillServices` ✓ | — |
+| Prebills (lista y crear) | `UniversalAptusPrebills` | `UniversalAptusPrebills` ✓ | `universal-aptus-prebills` |
+| Detalle de la Prebill | `UniversalAptusPrebillDetail` | `UniversalAptusPrebillDetail` ✓ | `universal-aptus-prebilldetail` |
 
 ## Rutas de `prebill_services`
 
 | Método | Ruta | Reglas |
 |---|---|---|
 | GET | `/:org/prebills`, `clientes`, `proyectos`, `abogados`, `liberado-disponible` (`cliente_id, moneda`) | listas |
+| GET | `/:org/tiempos`, `gastos`, `cargos-fijos` (`liberado, facturado`) | para saber qué clientes tienen algo listo para Prebill |
 | GET | `/:org/prebills/:id` y `/:id/disponible`, `/movimientos`, `/vista-factura`, `/edicion` | lectura (vista-factura y edicion consultan Books sin escribir) |
 | POST | `/:org/prebills` | `{cliente_id, moneda, tiempo_id[], gasto_id[], cargo_fijo_id[]}`; al menos una línea; responde `ids_ignorados` |
 | PATCH | `/:org/prebills/:id/lineas` | `agregar_*` / `quitar_*` (tiempo, gasto, cargo_fijo); solo si no está facturada |
@@ -45,11 +46,22 @@ estado. Contexto: `docs/CONTEXTO_CATALYST.md` §5.5 y `docs/prebill-api.md` (Pre
 
 ```bash
 cd functions/prebill_services && npm test   # 8
+cd UniversalAptusPrebills && npm test        # 5 (lógica compartida)
+cd UniversalAptusPrebillDetail && npm test   # 5
 ```
+
+## Lógica compartida
+
+`shared/prebills.ts` (tipos, líneas, llamadas a la API) y `shared/prebills.test.mjs` se copian igual a
+`src/lib/prebills.ts` y `tests/` de las dos Slates. Cambiarlos aquí y volver a copiarlos.
 
 ## Pendientes
 
-1. Crear el proyecto y los 3 repositorios → desplegar la función y revisar en vivo la forma de las
-   respuestas (lista, detalle, vista previa) antes de terminar las pantallas.
-2. Pantallas: lista y crear · detalle.
-3. Fase 2 (con aprobación): facturar y deshacer factura.
+1. ~~Proyecto, repositorios y función~~ Hecho (2026-11-13): función desplegada; en vivo responden la lista
+   (8 Prebills), el detalle, lo disponible, la vista previa (con bloqueos y avisos), movimientos y edición.
+2. ~~Pantallas~~ Hechas y en GitHub. Probadas en Chrome con datos reales sin escribir: lista con filtros,
+   Nueva Prebill (Avolar: 3 registros, 15,100 MXN; Go Sharp: 2), detalle de #9 (autorizada) y #7
+   (facturada, solo consulta). **Faltan sus Slates** y los dominios en CORS.
+3. Prueba del usuario: crear una Prebill de prueba, quitar y agregar una línea, descuento, enviar a
+   revisión, autorizar; crear otra y eliminarla.
+4. Fase 2 (con aprobación): facturar y deshacer factura.
