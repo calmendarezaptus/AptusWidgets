@@ -16,7 +16,7 @@ los reportes (WIP, Reporte 03 y los demás de ReportesAptus). **Todo es de solo 
 |---|---|---|---|
 | Función | `functions/aptus_report_services` | `AptusReportServices` ✓ | — |
 | Cobranza | `UniversalAptusCobranza` (por hacer) | `UniversalAptusCobranza` | `universal-aptus-cobranza` |
-| WIP | `UniversalAptusWip` (por hacer) | `UniversalAptusWip` | `universal-aptus-wip` |
+| WIP | `UniversalAptusWip` | `UniversalAptusWip` ✓ | `universal-aptus-wip` |
 | Ingresos | `UniversalAptusIngresos` (por hacer) | `UniversalAptusIngresos` | `universal-aptus-ingresos` |
 
 ## Rutas de ReportesSandbox (2026-11-14)
@@ -58,4 +58,10 @@ Pruebas: `cd functions/aptus_report_services && npm test` (8). Filtros desconoci
    WIP completo (414), ingresos 2020-2022 (4,738,750.84 MXN, cuadre 0; 6 s), facturas con CFDI;
    filtro inválido → 400 y POST → 404.
 2. ~~Rutas de WIP e ingresos~~ Hecho (2026-11-14): en ReportesSandbox y en la función.
-3. Slates: Cobranza primero (ya tiene API), luego WIP e Ingresos.
+3. WIP (2026-11-14): pantalla hecha y en GitHub. Tema Navy. Pendiente / Facturado / Todo, tipos,
+   fechas, moneda, origen, búsqueda y responsable; árbol con totales por moneda; aviso de clientes sin
+   responsable con enlace a Configuración del proyecto; CSV; reintento ante `{ listo: false }`.
+   Probada en Chrome con datos reales sin escribir: los totales cuadran con la API (pendiente
+   749,029.98 MXN / 1,451 USD; todo 974,755.96 MXN / 1,513.57 USD / 261.96 EUR). 6 pruebas.
+   **Faltan la Slate `universal-aptus-wip` y su dominio en CORS.**
+4. Ingresos y Cobranza.
