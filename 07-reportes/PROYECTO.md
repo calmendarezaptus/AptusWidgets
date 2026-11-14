@@ -63,5 +63,5 @@ Pruebas: `cd functions/aptus_report_services && npm test` (8). Filtros desconoci
    responsable con enlace a Configuración del proyecto; CSV; reintento ante `{ listo: false }`.
    Probada en Chrome con datos reales sin escribir: los totales cuadran con la API (pendiente
    749,029.98 MXN / 1,451 USD; todo 974,755.96 MXN / 1,513.57 USD / 261.96 EUR). 6 pruebas.
-   **Faltan la Slate `universal-aptus-wip` y su dominio en CORS.**
+   Slate y CORS verificados: la Slate publicada da los mismos totales, sin escrituras ni errores.
 4. Ingresos y Cobranza.
