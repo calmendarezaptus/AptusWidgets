@@ -71,4 +71,4 @@ Pruebas: `cd functions/aptus_report_services && npm test` (8). Filtros desconoci
    datos reales sin escribir: 2020-2022 = 4,738,750.84 MXN, 66 pagos, 62 facturas, cuadre 0; Laura
    Romero M. = 10,030.43 (3 de 62 facturas). 6 pruebas. **Faltan la Slate `universal-aptus-ingresos`
    y su dominio en CORS.**
-5. Cobranza (estado de cuenta, facturas con CFDI, LEDES): no cabe como 4.ª Slate; decidir dónde va.
+5. Cobranza (estado de cuenta, facturas con CFDI, LEDES): tercera y última Slate del proyecto.
