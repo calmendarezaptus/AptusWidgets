@@ -17,7 +17,7 @@ los reportes (WIP, Reporte 03 y los demás de ReportesAptus). **Todo es de solo 
 | Función | `functions/aptus_report_services` | `AptusReportServices` ✓ | — |
 | Cobranza | `UniversalAptusCobranza` (por hacer) | `UniversalAptusCobranza` | `universal-aptus-cobranza` |
 | WIP | `UniversalAptusWip` | `UniversalAptusWip` ✓ | `universal-aptus-wip` |
-| Ingresos | `UniversalAptusIngresos` (por hacer) | `UniversalAptusIngresos` | `universal-aptus-ingresos` |
+| Ingresos | `UniversalAptusIngresos` | `UniversalAptusIngresos` ✓ | `universal-aptus-ingresos` |
 
 ## Rutas de ReportesSandbox (2026-11-14)
 
@@ -64,4 +64,11 @@ Pruebas: `cd functions/aptus_report_services && npm test` (8). Filtros desconoci
    Probada en Chrome con datos reales sin escribir: los totales cuadran con la API (pendiente
    749,029.98 MXN / 1,451 USD; todo 974,755.96 MXN / 1,513.57 USD / 261.96 EUR). 6 pruebas.
    Slate y CORS verificados: la Slate publicada da los mismos totales, sin escrituras ni errores.
-4. Ingresos y Cobranza.
+4. Ingresos (2026-11-14): pantalla hecha y en GitHub. Periodo (mes anterior por omisión, este mes,
+   este año, año anterior u otro); responsable, abogado, moneda, concepto y desglose; pestañas
+   Resumen, Detalle por factura (búsqueda y CSV) y Conciliación CFDI (inconsistencias por tipo, CSV).
+   Con filtros el servidor no da cuadre (trae `nota`) y la pantalla lo dice. Probada en Chrome con
+   datos reales sin escribir: 2020-2022 = 4,738,750.84 MXN, 66 pagos, 62 facturas, cuadre 0; Laura
+   Romero M. = 10,030.43 (3 de 62 facturas). 6 pruebas. **Faltan la Slate `universal-aptus-ingresos`
+   y su dominio en CORS.**
+5. Cobranza (estado de cuenta, facturas con CFDI, LEDES): no cabe como 4.ª Slate; decidir dónde va.
