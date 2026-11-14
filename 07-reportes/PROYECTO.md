@@ -8,7 +8,7 @@ los reportes (WIP, Reporte 03 y los demás de ReportesAptus). **Todo es de solo 
 | Proyecto de Catalyst | `ReportsForAptusFinancials` (`247000003819490`) |
 | URL de la función | `https://reportsforaptusfinancials-730085095.development.catalystserverless.com/server/aptus_report_services` |
 | Función | `aptus_report_services` → `functions/aptus_report_services` |
-| Slates (0 de 3) | WIP; Ingresos (Reporte 03); Cobranza (estado de cuenta, facturas con CFDI, LEDES) |
+| Slates (2 de 3) | WIP (publicada); Ingresos (Reporte 03, falta su Slate); queda 1 lugar: Cobranza (estado de cuenta, facturas con CFDI, LEDES) |
 
 ## Piezas
 
