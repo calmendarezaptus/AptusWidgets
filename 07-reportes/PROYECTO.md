@@ -5,7 +5,8 @@ los reportes (WIP, Reporte 03 y los demás de ReportesAptus). **Todo es de solo 
 
 | | |
 |---|---|
-| Proyecto de Catalyst | `ReportsForAptusFinancials` (por crear) |
+| Proyecto de Catalyst | `ReportsForAptusFinancials` (`247000003819490`) |
+| URL de la función | `https://reportsforaptusfinancials-730085095.development.catalystserverless.com/server/aptus_report_services` |
 | Función | `aptus_report_services` → `functions/aptus_report_services` |
 | Slates (0 de 3) | WIP; Ingresos (Reporte 03); Cobranza (estado de cuenta, facturas con CFDI, LEDES) |
 
@@ -13,7 +14,7 @@ los reportes (WIP, Reporte 03 y los demás de ReportesAptus). **Todo es de solo 
 
 | Pieza | Carpeta | Repositorio | Slate / Deployment Name |
 |---|---|---|---|
-| Función | `functions/aptus_report_services` | `AptusReportServices` (por crear) | — |
+| Función | `functions/aptus_report_services` | `AptusReportServices` ✓ | — |
 | Cobranza | `UniversalAptusCobranza` (por hacer) | `UniversalAptusCobranza` | `universal-aptus-cobranza` |
 | WIP | `UniversalAptusWip` (por hacer) | `UniversalAptusWip` | `universal-aptus-wip` |
 | Ingresos | `UniversalAptusIngresos` (por hacer) | `UniversalAptusIngresos` | `universal-aptus-ingresos` |
@@ -52,8 +53,9 @@ Pruebas: `cd functions/aptus_report_services && npm test` (8). Filtros desconoci
 
 ## Pendientes
 
-1. El usuario crea el proyecto `ReportsForAptusFinancials`, la función `aptus_report_services`
-   (Advanced I/O, Node 24), la variable `AUTH_TOKEN`, el segmento de caché `APTUS_MIRROR_CONN_DATA`
-   y el repo `AptusReportServices` → despliego, subo y pruebo en vivo.
+1. ~~Proyecto, función y repo~~ Hecho (2026-11-14): desplegada y subida. En vivo (solo lectura):
+   clientes, catálogo de reportes, WIP pendiente (185 renglones, 749,029.98 MXN y 1,451 USD; 1 s),
+   WIP completo (414), ingresos 2020-2022 (4,738,750.84 MXN, cuadre 0; 6 s), facturas con CFDI;
+   filtro inválido → 400 y POST → 404.
 2. ~~Rutas de WIP e ingresos~~ Hecho (2026-11-14): en ReportesSandbox y en la función.
 3. Slates: Cobranza primero (ya tiene API), luego WIP e Ingresos.
