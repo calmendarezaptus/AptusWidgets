@@ -1,0 +1,9 @@
+{
+  "functions": {
+    "targets": [
+      "aptus_report_services"
+    ],
+    "ignore": [],
+    "source": "functions"
+  }
+}

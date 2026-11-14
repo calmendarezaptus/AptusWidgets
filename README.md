@@ -18,8 +18,9 @@ Aptus Widgets/
 ├─ 02-gastos/                  PROYECTO.md · functions/expense_services · 2 Slates
 ├─ 03-honorarios-fijos/        PROYECTO.md · functions/fixed_fee_services · 2 Slates
 ├─ 04-consolidado/             PROYECTO.md · functions/aptus_overview_services · 3 Slates
-├─ 05-configuracion/          PROYECTO.md · functions/aptus_settings_services · 1 Slate
+├─ 05-configuracion/          PROYECTO.md · functions/aptus_settings_services · 2 Slates
 ├─ 06-prebills/               PROYECTO.md · functions/prebill_services · 2 Slates
+├─ 07-reportes/               PROYECTO.md · functions/aptus_report_services · 0 Slates
 └─ _archivo/                   ZIP y bundles originales (no se versiona)
 ```
 
@@ -29,8 +30,9 @@ Aptus Widgets/
 | Gastos | En producción (2026-11-11): proyecto, función y Slates propias |
 | Honorarios fijos | En producción (2026-11-11): proyecto, función y Slates propias |
 | Consolidado | Publicado (2026-11-13): calendario, Liberaciones y Configuración del proyecto |
-| Configuración | Publicado (2026-11-13): Configuración de abogados; Configuración del despacho (falta su Slate) |
+| Configuración | Publicado (2026-11-13): Configuración de abogados; Configuración del despacho |
 | Prebills | Publicado (2026-11-13): lista, nueva y detalle; facturar y deshacer en Books (fase 2) |
+| Reportes | En construcción (2026-11-14): función de solo lectura lista; WIP e ingresos esperan rutas de ReportesSandbox |
 
 Las carpetas de funciones y Slates son repositorios independientes y este repositorio las ignora
 (`.gitignore`).

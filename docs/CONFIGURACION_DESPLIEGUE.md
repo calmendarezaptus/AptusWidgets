@@ -26,6 +26,8 @@ Detalle de cada proyecto en su `PROYECTO.md`.
 | **Prebills** | `PrebillsForAptusFinancials` | `prebill_services` | `universal-aptus-prebills` | `UniversalAptusPrebills` |
 | | | | `universal-aptus-prebilldetail` | `UniversalAptusPrebillDetail` |
 | | | | | Función: `AptusPrebillServices` |
+| **Reportes** | `ReportsForAptusFinancials` | `aptus_report_services` | `universal-aptus-cobranza`, `universal-aptus-wip`, `universal-aptus-ingresos` | `UniversalAptusCobranza`, `UniversalAptusWip`, `UniversalAptusIngresos` |
+| | | | | Función: `AptusReportServices` |
 | (todos) | — | — | — | `AptusWidgets`: docs, `shared/` y los `PROYECTO.md` |
 
 El dominio de cada Slate es `https://<Deployment Name>.onslate.com`.

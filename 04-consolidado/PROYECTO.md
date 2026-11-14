@@ -10,7 +10,7 @@ con filtros), **liberaciones** y **configuración del proyecto**. Contexto en
 | URL de la función | `https://overviewforaptusfinancials-730085095.development.catalystserverless.com/server/aptus_overview_services` |
 | Función | `aptus_overview_services` → `functions/aptus_overview_services` |
 | Slates (3 de 3) | Calendario unificado · Liberaciones · Configuración del proyecto |
-| Estado | Función desplegada con liberaciones y configuración (2026-11-13); calendario publicado; **Liberaciones y Configuración listas, faltan sus Slates** |
+| Estado | Función desplegada con liberaciones y configuración (2026-11-13); calendario publicado; Liberaciones y Configuración del proyecto publicadas (Slates y CORS verificados) |
 
 ## Piezas
 

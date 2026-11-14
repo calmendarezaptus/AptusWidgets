@@ -71,7 +71,7 @@ cd UniversalAptusPrebillDetail && npm test   # 5
    (8 Prebills), el detalle, lo disponible, la vista previa (con bloqueos y avisos), movimientos y edición.
 2. ~~Pantallas~~ Hechas y en GitHub. Probadas en Chrome con datos reales sin escribir: lista con filtros,
    Nueva Prebill (Avolar: 3 registros, 15,100 MXN; Go Sharp: 2), detalle de #9 (autorizada) y #7
-   (facturada, solo consulta). **Faltan sus Slates** y los dominios en CORS.
+   (facturada, solo consulta). Slates y CORS listos (el usuario las probó en vivo).
 3. Prueba del usuario: crear una Prebill de prueba, quitar y agregar una línea, descuento, enviar a
    revisión, autorizar; crear otra y eliminarla.
 4. ~~Fase 2~~ Hecha (2026-11-13): función desplegada; en vivo, facturar una facturada, deshacer una no
