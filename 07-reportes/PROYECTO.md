@@ -8,7 +8,7 @@ los reportes (WIP, Reporte 03 y los demás de ReportesAptus). **Todo es de solo 
 | Proyecto de Catalyst | `ReportsForAptusFinancials` (`247000003819490`) |
 | URL de la función | `https://reportsforaptusfinancials-730085095.development.catalystserverless.com/server/aptus_report_services` |
 | Función | `aptus_report_services` → `functions/aptus_report_services` |
-| Slates (3 de 3) | WIP (publicada); Ingresos (Reporte 03, publicada); Cobranza (estado de cuenta, facturas con CFDI, LEDES; falta su Slate) |
+| Slates (3 de 3) | WIP (publicada); Ingresos (Reporte 03, publicada); Cobranza (estado de cuenta, facturas con CFDI, LEDES; publicada) |
 
 ## Piezas
 
@@ -75,5 +75,5 @@ Pruebas: `cd functions/aptus_report_services && npm test` (8). Filtros desconoci
    o todas, fecha de corte, antigüedad, CSV), Facturas y CFDI (con botón a su LEDES) y LEDES (vista previa,
    avisos UTBMS, descarga .txt). Probada en Chrome con datos reales sin escribir: Avolar saldo 1,154.00 MXN
    (igual al de Books; 3 facturas con saldo, 5 en total), 5 Prebills facturadas, LEDES de la #3 =
-   4,520.00 con 2 líneas, Prebill 9999 → "no existe". 5 pruebas. **Faltan la Slate
-   `universal-aptus-cobranza` y su dominio en CORS.**
+   4,520.00 con 2 líneas, Prebill 9999 → "no existe". 5 pruebas. Slate y CORS verificados: la Slate
+   publicada da las mismas cifras, sin escrituras.
