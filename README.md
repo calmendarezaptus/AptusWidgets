@@ -32,7 +32,7 @@ Aptus Widgets/
 | Consolidado | Publicado (2026-11-13): calendario, Liberaciones y Configuración del proyecto |
 | Configuración | Publicado (2026-11-13): Configuración de abogados; Configuración del despacho |
 | Prebills | Publicado (2026-11-13): lista, nueva y detalle; facturar y deshacer en Books (fase 2) |
-| Reportes | En construcción (2026-11-14): función de solo lectura lista; WIP e ingresos esperan rutas de ReportesSandbox |
+| Reportes | En construcción (2026-11-14): función de solo lectura con WIP, ingresos y cobranza; faltan proyecto en Catalyst y Slates |
 
 Las carpetas de funciones y Slates son repositorios independientes y este repositorio las ignora
 (`.gitignore`).
