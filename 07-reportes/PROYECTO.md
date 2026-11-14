@@ -8,7 +8,7 @@ los reportes (WIP, Reporte 03 y los demás de ReportesAptus). **Todo es de solo 
 | Proyecto de Catalyst | `ReportsForAptusFinancials` (`247000003819490`) |
 | URL de la función | `https://reportsforaptusfinancials-730085095.development.catalystserverless.com/server/aptus_report_services` |
 | Función | `aptus_report_services` → `functions/aptus_report_services` |
-| Slates (2 de 3) | WIP (publicada); Ingresos (Reporte 03, falta su Slate); queda 1 lugar: Cobranza (estado de cuenta, facturas con CFDI, LEDES) |
+| Slates (2 de 3) | WIP (publicada); Ingresos (Reporte 03, publicada); queda 1 lugar: Cobranza (estado de cuenta, facturas con CFDI, LEDES) |
 
 ## Piezas
 
@@ -69,6 +69,6 @@ Pruebas: `cd functions/aptus_report_services && npm test` (8). Filtros desconoci
    Resumen, Detalle por factura (búsqueda y CSV) y Conciliación CFDI (inconsistencias por tipo, CSV).
    Con filtros el servidor no da cuadre (trae `nota`) y la pantalla lo dice. Probada en Chrome con
    datos reales sin escribir: 2020-2022 = 4,738,750.84 MXN, 66 pagos, 62 facturas, cuadre 0; Laura
-   Romero M. = 10,030.43 (3 de 62 facturas). 6 pruebas. **Faltan la Slate `universal-aptus-ingresos`
-   y su dominio en CORS.**
+   Romero M. = 10,030.43 (3 de 62 facturas). 6 pruebas. Slate y CORS verificados: la Slate publicada
+   da las mismas cifras, sin escrituras ni errores.
 5. Cobranza (estado de cuenta, facturas con CFDI, LEDES): tercera y última Slate del proyecto.
