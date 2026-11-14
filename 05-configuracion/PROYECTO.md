@@ -22,7 +22,7 @@ conceptos de factura y catálogos: niveles, tareas estándar y categorías de ga
 |---|---|---|---|
 | Función | `functions/aptus_settings_services` | `AptusSettingsServices` ✓ | — |
 | Configuración de abogados | `UniversalAptusLawyerSettings` | `UniversalAptusLawyerSettings` ✓ | `universal-aptus-lawyersettings` |
-| Configuración del despacho | `UniversalAptusFirmSettings` | `UniversalAptusFirmSettings` (por crear) | `universal-aptus-firmsettings` |
+| Configuración del despacho | `UniversalAptusFirmSettings` | `UniversalAptusFirmSettings` | `universal-aptus-firmsettings` |
 
 Configuración del proyecto (Consolidado) enlaza aquí desde "Asignar responsable", y sigue leyendo la
 marca con su propia función (`GET /abogados-responsables`, solo lectura).
@@ -90,7 +90,7 @@ cd UniversalAptusFirmSettings && npm test          # 4
    responsable; desactivar y reactivar.
 4. Configuración del despacho (2026-11-13): función desplegada; en vivo responden la configuración, los 4
    conceptos (todos con artículo), los 64 artículos de Books, faltantes (ninguno), 7 niveles, 14 tareas y
-   11 categorías. Pantalla probada en Chrome sin escribir. **Faltan el repo `UniversalAptusFirmSettings`,
-   su Slate y el dominio en CORS.**
+   11 categorías. Repo, Slate y CORS listos; la Slate publicada se probó en Chrome sin
+   escribir (sin errores, sin desbordes en celular).
 5. Prueba del usuario del despacho: cambiar el formato de factura y regresarlo; agregar una cuenta
    bancaria; crear, editar y borrar un nivel de prueba; desactivar y reactivar una tarea.
