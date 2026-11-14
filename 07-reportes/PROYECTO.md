@@ -8,14 +8,14 @@ los reportes (WIP, Reporte 03 y los demás de ReportesAptus). **Todo es de solo 
 | Proyecto de Catalyst | `ReportsForAptusFinancials` (`247000003819490`) |
 | URL de la función | `https://reportsforaptusfinancials-730085095.development.catalystserverless.com/server/aptus_report_services` |
 | Función | `aptus_report_services` → `functions/aptus_report_services` |
-| Slates (2 de 3) | WIP (publicada); Ingresos (Reporte 03, publicada); queda 1 lugar: Cobranza (estado de cuenta, facturas con CFDI, LEDES) |
+| Slates (3 de 3) | WIP (publicada); Ingresos (Reporte 03, publicada); Cobranza (estado de cuenta, facturas con CFDI, LEDES; falta su Slate) |
 
 ## Piezas
 
 | Pieza | Carpeta | Repositorio | Slate / Deployment Name |
 |---|---|---|---|
 | Función | `functions/aptus_report_services` | `AptusReportServices` ✓ | — |
-| Cobranza | `UniversalAptusCobranza` (por hacer) | `UniversalAptusCobranza` | `universal-aptus-cobranza` |
+| Cobranza | `UniversalAptusCobranza` | `UniversalAptusCobranza` ✓ | `universal-aptus-cobranza` |
 | WIP | `UniversalAptusWip` | `UniversalAptusWip` ✓ | `universal-aptus-wip` |
 | Ingresos | `UniversalAptusIngresos` | `UniversalAptusIngresos` ✓ | `universal-aptus-ingresos` |
 
@@ -71,4 +71,9 @@ Pruebas: `cd functions/aptus_report_services && npm test` (8). Filtros desconoci
    datos reales sin escribir: 2020-2022 = 4,738,750.84 MXN, 66 pagos, 62 facturas, cuadre 0; Laura
    Romero M. = 10,030.43 (3 de 62 facturas). 6 pruebas. Slate y CORS verificados: la Slate publicada
    da las mismas cifras, sin escrituras ni errores.
-5. Cobranza (estado de cuenta, facturas con CFDI, LEDES): tercera y última Slate del proyecto.
+5. Cobranza (2026-11-14): pantalla hecha y en GitHub. Estado de cuenta (buscador de clientes, con saldo
+   o todas, fecha de corte, antigüedad, CSV), Facturas y CFDI (con botón a su LEDES) y LEDES (vista previa,
+   avisos UTBMS, descarga .txt). Probada en Chrome con datos reales sin escribir: Avolar saldo 1,154.00 MXN
+   (igual al de Books; 3 facturas con saldo, 5 en total), 5 Prebills facturadas, LEDES de la #3 =
+   4,520.00 con 2 líneas, Prebill 9999 → "no existe". 5 pruebas. **Faltan la Slate
+   `universal-aptus-cobranza` y su dominio en CORS.**
