@@ -13,6 +13,7 @@ Detalle de cada proyecto en su `PROYECTO.md`.
 | | | | | Función: `AptusTimeEntryServices` |
 | **Gastos** | `ExpensesForAptusFinancials` | `expense_services` | `universal-aptus-expenseentry` | `UniversalAptusExpenseEntry` ✓ existe |
 | | | | `universal-expenseentry-calendar` | `UniversalExpensesCalendar` ✓ existe |
+| | | | `universal-aptus-reimbursements` | `UniversalAptusReimbursements` |
 | | | | | Función: `AptusExpenseServices` |
 | **Honorarios fijos** | `FixedFeesForAptusFinancials` | `fixed_fee_services` | `universal-aptus-fixedfeeentry` | `UniversalAptusFixedFeeEntry` |
 | | | | `universal-fixedfeeentry-calendar` | `UniversalFixedFeesCalendar` |

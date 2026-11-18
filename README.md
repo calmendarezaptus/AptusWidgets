@@ -15,7 +15,7 @@ Aptus Widgets/
 │  └─ CONFIGURACION_DESPLIEGUE.md  nombres de repos, proyectos, Slates y pasos
 ├─ shared/catalyst-core/       código común de las funciones (se copia a core/)
 ├─ 01-tiempos/                 PROYECTO.md · functions/time_entry_services · 2 Slates
-├─ 02-gastos/                  PROYECTO.md · functions/expense_services · 2 Slates
+├─ 02-gastos/                  PROYECTO.md · functions/expense_services · 3 Slates
 ├─ 03-honorarios-fijos/        PROYECTO.md · functions/fixed_fee_services · 2 Slates
 ├─ 04-consolidado/             PROYECTO.md · functions/aptus_overview_services · 3 Slates
 ├─ 05-configuracion/          PROYECTO.md · functions/aptus_settings_services · 3 Slates

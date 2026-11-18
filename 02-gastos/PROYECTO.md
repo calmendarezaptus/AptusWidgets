@@ -8,7 +8,7 @@ Captura y calendario de **gastos y reembolsos** sobre ReportesSandbox. Contexto 
 | Proyecto de Catalyst | `ExpensesForAptusFinancials` (`247000003819090`) |
 | URL de la función | `https://expensesforaptusfinancials-730085095.development.catalystserverless.com/server/expense_services` |
 | Función | `expense_services` → `functions/expense_services` |
-| Slates (2 de 3) | Captura de gastos · Calendario de gastos |
+| Slates (3 de 3) | Captura de gastos · Calendario de gastos · Reembolsos a abogados |
 | Estado | Función desplegada y probada (2026-11-11); apps apuntando a ella; **En producción** (2026-11-11): función, Slates y CORS verificados; migración terminada |
 
 ## Piezas
@@ -18,6 +18,7 @@ Captura y calendario de **gastos y reembolsos** sobre ReportesSandbox. Contexto 
 | Función | `functions/expense_services` | `AptusExpenseServices` ✓ | — |
 | Captura de gastos | `UniversalAptusExpenseEntry` | `UniversalAptusExpenseEntry` ✓ | `universal-aptus-expenseentry` |
 | Calendario de gastos | `UniversalExpensesCalendar` | `UniversalExpensesCalendar` ✓ | `universal-expenseentry-calendar` |
+| Reembolsos a abogados | `UniversalAptusReimbursements` | `UniversalAptusReimbursements` (por crear) | `universal-aptus-reimbursements` |
 
 Navegación entre Slates:
 - Calendario → captura: `?organization_id=&gasto_id=&origin=` (Agregar / Editar).
@@ -35,6 +36,9 @@ Navegación entre Slates:
 | GET | `/:org/gastos` | `GET /gastos` — filtros: `proyecto_id, liberado, facturado, prebill_id, categoria_id, facturable, abogado_id, pagado_por, reembolso_estado` |
 | GET | `/:org/clientes`, `/:org/proyectos`, `/:org/abogados` | listas |
 | GET | `/:org/categorias-gasto` | `?todos` incluye inactivas |
+| GET | `/:org/reembolsos` | `GET /reembolsos` — pendientes, por abogado y moneda |
+| POST | `/:org/gastos/:id/reembolso` | `POST /gastos/:id/reembolso` — `fecha` opcional (real, no futura). Antes revisa que lo pagó un abogado y que esté pendiente (si no, 409 sin escribir) |
+| DELETE | `/:org/gastos/:id/reembolso` | `DELETE /gastos/:id/reembolso` — solo si está reembolsado (si no, 409) |
 
 - Cualquier otra ruta → 404 JSON **sin** `stage`. Un 404 **con** `stage` significa "el gasto ya no
   existe" (el calendario lo quita del listado).
@@ -94,5 +98,9 @@ cd UniversalExpensesCalendar && npm test         # 6
 
 ## Pendientes
 
-- Reembolsos al abogado (`POST /gastos/:id/reembolso`, `GET /reembolsos`): ver `docs/CONTEXTO_CATALYST.md` §5.1.
+- ~~Reembolsos al abogado~~ Hecho (2026-11-18): función desplegada (15 pruebas) y pantalla (4 pruebas).
+  En vivo: 2 pendientes ([DEMO] Ana Socia 280.00 y [DEMO] Luis Asociado 640.00 MXN), ninguno reembolsado.
+  Probada en Chrome sin escribir (la confirmación se rechazó). **Faltan el repo
+  `UniversalAptusReimbursements`, su Slate y el dominio en CORS.** Prueba del usuario: marcar uno con
+  fecha de ayer, revisarlo en Reembolsados y deshacerlo.
 - El calendario se probó con datos reales (12 gastos, incluido el #31); falta probarlo desplegado.
