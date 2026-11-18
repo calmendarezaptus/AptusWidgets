@@ -18,7 +18,7 @@ Captura y calendario de **gastos y reembolsos** sobre ReportesSandbox. Contexto 
 | Función | `functions/expense_services` | `AptusExpenseServices` ✓ | — |
 | Captura de gastos | `UniversalAptusExpenseEntry` | `UniversalAptusExpenseEntry` ✓ | `universal-aptus-expenseentry` |
 | Calendario de gastos | `UniversalExpensesCalendar` | `UniversalExpensesCalendar` ✓ | `universal-expenseentry-calendar` |
-| Reembolsos a abogados | `UniversalAptusReimbursements` | `UniversalAptusReimbursements` (por crear) | `universal-aptus-reimbursements` |
+| Reembolsos a abogados | `UniversalAptusReimbursements` | `UniversalAptusReimbursements` ✓ | `universal-aptus-reimbursements` |
 
 Navegación entre Slates:
 - Calendario → captura: `?organization_id=&gasto_id=&origin=` (Agregar / Editar).
@@ -100,7 +100,7 @@ cd UniversalExpensesCalendar && npm test         # 6
 
 - ~~Reembolsos al abogado~~ Hecho (2026-11-18): función desplegada (15 pruebas) y pantalla (4 pruebas).
   En vivo: 2 pendientes ([DEMO] Ana Socia 280.00 y [DEMO] Luis Asociado 640.00 MXN), ninguno reembolsado.
-  Probada en Chrome sin escribir (la confirmación se rechazó). **Faltan el repo
-  `UniversalAptusReimbursements`, su Slate y el dominio en CORS.** Prueba del usuario: marcar uno con
+  Probada en Chrome sin escribir (la confirmación se rechazó). Repo, Slate y CORS verificados: la
+  Slate publicada da los mismos datos, sin escrituras ni errores. Prueba del usuario: marcar uno con
   fecha de ayer, revisarlo en Reembolsados y deshacerlo.
 - El calendario se probó con datos reales (12 gastos, incluido el #31); falta probarlo desplegado.
