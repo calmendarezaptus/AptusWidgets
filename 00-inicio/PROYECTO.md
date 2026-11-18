@@ -5,13 +5,13 @@ pantalla un botón para volver a él. Decisión: proyecto propio, para no ocupar
 
 | | |
 |---|---|
-| Proyecto de Catalyst | `HomeForAptusFinancials` (por crear) |
+| Proyecto de Catalyst | `HomeForAptusFinancials` |
 | Función | ninguna (solo enlaces; no necesita CORS) |
 | Slates (1 de 3) | Menú principal |
 
 | Pieza | Carpeta | Repositorio | Slate / Deployment Name |
 |---|---|---|---|
-| Menú principal | `UniversalAptusHome` | `UniversalAptusHome` (por crear) | `universal-aptus-home` |
+| Menú principal | `UniversalAptusHome` | `UniversalAptusHome` ✓ | `universal-aptus-home` |
 
 ## Navegación
 
@@ -27,5 +27,5 @@ pantalla un botón para volver a él. Decisión: proyecto propio, para no ocupar
 
 ## Pendientes
 
-1. El usuario crea el proyecto, el repo `UniversalAptusHome` y la Slate → subo y pruebo.
+1. Proyecto y repo creados; código subido (2026-11-18). Falta la Slate → la pruebo publicada.
 2. Volver a desplegar las 18 Slates para que tomen el botón Menú (si no se despliegan solas al subir).
