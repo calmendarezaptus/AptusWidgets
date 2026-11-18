@@ -14,6 +14,7 @@ Aptus Widgets/
 │  ├─ DISENO_CATALYST.md       patrón de código e interfaz
 │  └─ CONFIGURACION_DESPLIEGUE.md  nombres de repos, proyectos, Slates y pasos
 ├─ shared/catalyst-core/       código común de las funciones (se copia a core/)
+├─ 00-inicio/                  PROYECTO.md · menú principal (sin función) · 1 Slate
 ├─ 01-tiempos/                 PROYECTO.md · functions/time_entry_services · 2 Slates
 ├─ 02-gastos/                  PROYECTO.md · functions/expense_services · 3 Slates
 ├─ 03-honorarios-fijos/        PROYECTO.md · functions/fixed_fee_services · 2 Slates
@@ -26,6 +27,7 @@ Aptus Widgets/
 
 | Proyecto | Estado |
 |---|---|
+| Inicio | Menú principal listo (2026-11-18); falta su proyecto y Slate. Botón Menú en las 18 pantallas |
 | Tiempos | Publicado (2026-11-11): vía ReportesSandbox |
 | Gastos | En producción (2026-11-11): proyecto, función y Slates propias |
 | Honorarios fijos | En producción (2026-11-11): proyecto, función y Slates propias |
