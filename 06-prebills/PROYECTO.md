@@ -80,3 +80,10 @@ cd UniversalAptusPrebillDetail && npm test   # 5
 5. ~~Liberación = aprobación de horas~~ Decidido por el usuario (2026-11-13): los proyectos de Books se
    declaran sin aprobación de horas y el usuario irá quitándosela a los que la tienen. La vista previa
    de factura sigue bloqueando si queda alguno sin aprobar.
+6. ~~Imprimir la Prebill~~ Hecho (2026-11-18): `GET /:org/prebills/:id/formato` (`formato` carta/detallado,
+   `idioma` es/en, `salida` pdf/html, `descargar=1`) → `GET /formatos/prebill/:id`. Binario: usa la
+   conexión de `core/DbConfigService` sin pasar por `PrebillApiClient` (solo JSON), 25 s de espera. La
+   versión HTML llega **sin el token** y sin los enlaces de la barra de ReportesSandbox (solo queda
+   "Imprimir"). En el detalle, botón "Imprimir": formato, idioma, Descargar PDF, Abrir PDF y Versión
+   para imprimir. En vivo: PDF carta de la #9 en 6 s (85 KB), detallado en 1 s; #9999 → 404.
+   Probado en Chrome sin escribir. Función 13 pruebas; detalle 7.
