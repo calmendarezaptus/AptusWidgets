@@ -13,7 +13,7 @@ conceptos de factura y catálogos: niveles, tareas estándar y categorías de ga
 | Proyecto de Catalyst | `SettingsForAptusFinancials` (`247000003819350`) |
 | URL de la función | `https://settingsforaptusfinancials-730085095.development.catalystserverless.com/server/aptus_settings_services` |
 | Función | `aptus_settings_services` → `functions/aptus_settings_services` |
-| Slates (2 de 3) | Configuración de abogados; Configuración del despacho. Queda 1 lugar (tarifas generales y de cliente, IVA e idioma por cliente). |
+| Slates (3 de 3) | Configuración de abogados; Configuración del despacho; Tarifas y clientes. |
 | Tema | Esmeralda |
 
 ## Piezas
@@ -22,7 +22,8 @@ conceptos de factura y catálogos: niveles, tareas estándar y categorías de ga
 |---|---|---|---|
 | Función | `functions/aptus_settings_services` | `AptusSettingsServices` ✓ | — |
 | Configuración de abogados | `UniversalAptusLawyerSettings` | `UniversalAptusLawyerSettings` ✓ | `universal-aptus-lawyersettings` |
-| Configuración del despacho | `UniversalAptusFirmSettings` | `UniversalAptusFirmSettings` | `universal-aptus-firmsettings` |
+| Configuración del despacho | `UniversalAptusFirmSettings` | `UniversalAptusFirmSettings` ✓ | `universal-aptus-firmsettings` |
+| Tarifas y clientes | `UniversalAptusRateSettings` | `UniversalAptusRateSettings` (por crear) | `universal-aptus-ratesettings` |
 
 Configuración del proyecto (Consolidado) enlaza aquí desde "Asignar responsable", y sigue leyendo la
 marca con su propia función (`GET /abogados-responsables`, solo lectura).
@@ -49,6 +50,12 @@ marca con su propia función (`GET /abogados-responsables`, solo lectura).
 | DELETE | `/:org/tipos-abogado/:id` | borra el nivel y sus tarifas (Aptus 409 si un abogado lo usa) |
 | POST / PATCH | `/:org/tareas-estandar[/:id]` | nombre, `codigo_utbms`, `facturable` 0/1; al editar también `activo` (bool) y `orden`. No se borran: se desactivan |
 | POST / PATCH | `/:org/categorias-gasto[/:id]` | nombre, `codigo_utbms`, `tipo` gasto/reembolso; al editar `activo` y `orden` |
+| GET | `/:org/tarifas`, `/:org/clientes` | listas; tarifas con filtros `moneda`, `cliente_id`, `abogado_id`, `tipo_id`, `nivel` |
+| GET | `/:org/tarifas/cobertura` | abogados activos sin tarifa base en MXN o USD |
+| POST | `/:org/tarifas` | solo **general** y de **cliente** (todos, + nivel, + abogado). Propia del abogado, de nivel o de proyecto → 403 con dónde se editan. Misma combinación + moneda reemplaza (regla de la API) |
+| PATCH / DELETE | `/:org/tarifas/:id` | solo `tarifa`; antes revisa que la tarifa sea general o de cliente (si no, 403 sin escribir) |
+| GET | `/:org/impuestos` | → `GET /zoho/impuestos` (lectura) |
+| GET / PATCH | `/:org/clientes/:id/config` | `zoho_tax_id` (debe existir en Books → si no 422; `''` lo quita) e `idioma` (`es`, `en`, `''` = el de Books) |
 
 Quitar la marca de responsable no borra las asignaciones (regla de ReportesSandbox). Desactivar no
 borra tiempos ni asignaciones; la pantalla pide confirmación.
@@ -73,9 +80,10 @@ borra tiempos ni asignaciones; la pantalla pide confirmación.
 ## Pruebas
 
 ```bash
-cd functions/aptus_settings_services && npm test   # 10
+cd functions/aptus_settings_services && npm test   # 15
 cd UniversalAptusLawyerSettings && npm test        # 3
 cd UniversalAptusFirmSettings && npm test          # 4
+cd UniversalAptusRateSettings && npm test          # 6
 ```
 
 ## Pendientes
@@ -94,3 +102,10 @@ cd UniversalAptusFirmSettings && npm test          # 4
    escribir (sin errores, sin desbordes en celular).
 5. Prueba del usuario del despacho: cambiar el formato de factura y regresarlo; agregar una cuenta
    bancaria; crear, editar y borrar un nivel de prueba; desactivar y reactivar una tarea.
+6. Tarifas y clientes (2026-11-18): función desplegada; en vivo responden tarifas (28), las de un cliente,
+   cobertura (1 abogado sin USD: [DEMO] Pedro Paralegal), 12 impuestos y la configuración de un cliente.
+   Pantalla probada en Chrome sin escribir: 7 niveles y 3 tarifas propias (consulta), no hay tarifa
+   general, Go Sharp con IVA 16% y 2 tarifas por abogado; validaciones sin petición. 6 pruebas.
+   **Faltan el repo `UniversalAptusRateSettings`, su Slate y el dominio en CORS.**
+7. Prueba del usuario: poner y quitar una tarifa general; a un cliente de prueba cambiarle el IVA y el
+   idioma y regresarlos; agregar, editar y quitar una tarifa por nivel.

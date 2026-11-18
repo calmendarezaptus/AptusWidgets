@@ -21,7 +21,7 @@ Detalle de cada proyecto en su `PROYECTO.md`.
 | | | | `universal-aptus-liberaciones` | `UniversalAptusLiberaciones` |
 | | | | `universal-aptus-projectconfig` | `UniversalAptusProjectConfig` |
 | | | | | Función: `AptusOverviewServices` |
-| **Configuración** | `SettingsForAptusFinancials` | `aptus_settings_services` | `universal-aptus-lawyersettings`, `universal-aptus-firmsettings` | `UniversalAptusLawyerSettings`, `UniversalAptusFirmSettings` |
+| **Configuración** | `SettingsForAptusFinancials` | `aptus_settings_services` | `universal-aptus-lawyersettings`, `universal-aptus-firmsettings`, `universal-aptus-ratesettings` | `UniversalAptusLawyerSettings`, `UniversalAptusFirmSettings`, `UniversalAptusRateSettings` |
 | | | | | Función: `AptusSettingsServices` |
 | **Prebills** | `PrebillsForAptusFinancials` | `prebill_services` | `universal-aptus-prebills` | `UniversalAptusPrebills` |
 | | | | `universal-aptus-prebilldetail` | `UniversalAptusPrebillDetail` |
