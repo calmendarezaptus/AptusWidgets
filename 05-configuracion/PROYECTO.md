@@ -23,7 +23,7 @@ conceptos de factura y catálogos: niveles, tareas estándar y categorías de ga
 | Función | `functions/aptus_settings_services` | `AptusSettingsServices` ✓ | — |
 | Configuración de abogados | `UniversalAptusLawyerSettings` | `UniversalAptusLawyerSettings` ✓ | `universal-aptus-lawyersettings` |
 | Configuración del despacho | `UniversalAptusFirmSettings` | `UniversalAptusFirmSettings` ✓ | `universal-aptus-firmsettings` |
-| Tarifas y clientes | `UniversalAptusRateSettings` | `UniversalAptusRateSettings` (por crear) | `universal-aptus-ratesettings` |
+| Tarifas y clientes | `UniversalAptusRateSettings` | `UniversalAptusRateSettings` ✓ | `universal-aptus-ratesettings` |
 
 Configuración del proyecto (Consolidado) enlaza aquí desde "Asignar responsable", y sigue leyendo la
 marca con su propia función (`GET /abogados-responsables`, solo lectura).
@@ -106,6 +106,6 @@ cd UniversalAptusRateSettings && npm test          # 6
    cobertura (1 abogado sin USD: [DEMO] Pedro Paralegal), 12 impuestos y la configuración de un cliente.
    Pantalla probada en Chrome sin escribir: 7 niveles y 3 tarifas propias (consulta), no hay tarifa
    general, Go Sharp con IVA 16% y 2 tarifas por abogado; validaciones sin petición. 6 pruebas.
-   **Faltan el repo `UniversalAptusRateSettings`, su Slate y el dominio en CORS.**
+   Repo, Slate y CORS verificados: la Slate publicada da los mismos datos, sin escrituras ni errores.
 7. Prueba del usuario: poner y quitar una tarifa general; a un cliente de prueba cambiarle el IVA y el
    idioma y regresarlos; agregar, editar y quitar una tarifa por nivel.
