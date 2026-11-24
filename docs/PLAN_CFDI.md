@@ -7,7 +7,10 @@
 > **Actualización 2026-11-24 (usuario):** `facturacion` y ReportesSandbox están en **servidores distintos**
 > (no hay `127.0.0.1` entre ellos: todo va por HTTPS con autenticación). **Orden decidido:** primero que
 > `facturacion` funcione sin Creator (API v2, prompt en `docs/PROMPT_FACTURACION_V2.md`); después la
-> integración en ReportesSandbox y los widgets. Timbrar y cancelar crean documentos reales ante el SAT; ningún paso de este
+> integración en ReportesSandbox y los widgets.
+>
+> **2026-11-24:** API v2 de `facturacion` terminada (contrato en `docs/API_V2_CONTRATO.md`; 25 pruebas; prueba
+> de punta a punta en modo prueba con el emisor `pruebas-eku`). Siguiente: `docs/PROMPT_REPORTES_SANDBOX_CFDI.md`. Timbrar y cancelar crean documentos reales ante el SAT; ningún paso de este
 > plan timbra en producción sin la aprobación expresa del usuario, despacho por despacho.
 
 ## 1. Qué hay hoy
