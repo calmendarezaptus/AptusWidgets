@@ -2,7 +2,12 @@
 
 > 2026-11-24 · Basado en `cfdiDocs/SISTEMA_DETALLADO.md` (servicio `facturacion`), `docs/prebill-api.md`
 > (ReportesSandbox) y lo que ya está publicado en Catalyst. **Nada de esto está construido todavía:** es la
-> propuesta para decidir. Timbrar y cancelar crean documentos reales ante el SAT; ningún paso de este
+> propuesta para decidir.
+>
+> **Actualización 2026-11-24 (usuario):** `facturacion` y ReportesSandbox están en **servidores distintos**
+> (no hay `127.0.0.1` entre ellos: todo va por HTTPS con autenticación). **Orden decidido:** primero que
+> `facturacion` funcione sin Creator (API v2, prompt en `docs/PROMPT_FACTURACION_V2.md`); después la
+> integración en ReportesSandbox y los widgets. Timbrar y cancelar crean documentos reales ante el SAT; ningún paso de este
 > plan timbra en producción sin la aprobación expresa del usuario, despacho por despacho.
 
 ## 1. Qué hay hoy
@@ -32,7 +37,7 @@ El modo se elige en `config_despacho.cfdi.proveedor`.
 
 | | **Con Creator** (`creator`, ya existe) | **Sin Creator** (`aptus`, nuevo) |
 |---|---|---|
-| Quién timbra | La app Creator del despacho (Deluge → `facturacion`), **igual que hoy** | ReportesSandbox → `facturacion` (en el mismo servidor, por `127.0.0.1:3001`) |
+| Quién timbra | La app Creator del despacho (Deluge → `facturacion`), **igual que hoy** | ReportesSandbox → `facturacion` por **HTTPS** (servidores distintos), con token de servicio |
 | Dónde viven XML/PDF | Creator (+ adjuntos en Books) | ReportesSandbox (disco + tabla `cfdi`) y adjuntos en Books |
 | Qué hacen los widgets | **Consultar** estado, UUID, totales, cancelaciones; enlace "Abrir en Creator"; avisos de conciliación | Todo: vista previa, timbrar, descargar, cancelar, estatus SAT, complementos de pago |
 | Cambios en `facturacion` | Ninguno obligatorio | Los de la §3 |
@@ -50,7 +55,7 @@ Todos **aditivos**: lo que hoy llama Deluge no cambia (mismas rutas, parámetros
 | # | Cambio | Por qué | Prioridad |
 |---|---|---|---|
 | F1 | **Destino `api`** (`?destino=api` o rutas nuevas `/v2/...`): no toca Creator; responde con el timbre **y** el XML (y PDF si se pidió) en base64; el recovery guarda `destino` y no deja huérfanos | Hoy sin Creator el XML no regresa y el recovery se queda para siempre | Alta |
-| F2 | **Autenticación por token de servicio** (header `Authorization`) para el destino `api`, y **credenciales del PAC guardadas en el servidor** por emisor (`src/data/emisores.json` o similar, fuera de la URL): el cliente manda `emisor` y no contraseñas | Las contraseñas del PAC/PFX no deben viajar desde Aptus ni quedar en logs de nginx | Alta |
+| F2 | **(Obligatorio: servidores distintos)** **Autenticación por token de servicio** (header `Authorization`) para el destino `api`, y **credenciales del PAC guardadas en el servidor** por emisor (`src/data/emisores.json` o similar, fuera de la URL): el cliente manda `emisor` y no contraseñas | Las contraseñas del PAC/PFX no deben viajar desde Aptus ni quedar en logs de nginx | Alta |
 | F3 | **Idempotencia explícita**: `idempotencyKey` (p. ej. `org|invoice_id`); si ya se timbró con esa llave, responde **200 con el mismo timbre** (no 409) | Un reintento del widget (red, corte de 30 s) debe recuperar el CFDI, no fallar ni duplicar | Alta |
 | F4 | **Retenciones en CFDI de ingreso** (ISR 10 %, IVA 2/3) por concepto y a nivel comprobante | Honorarios a personas morales; grupo "HONORARIOS" de Books | Alta si algún despacho lo usa (confirmar) |
 | F5 | **Consultas por UUID**: `GET /v2/cfdi/:uuid` (estado guardado), `/xml`, `/pdf`, `/acuse`; y **callback opcional** (`callbackUrl`) cuando una cancelación 202 se resuelve en el barrido | Hoy el resultado final de la cancelación solo se escribe en Creator | Media |
@@ -101,7 +106,7 @@ La función de Catalyst **nunca** recibe ni guarda credenciales del PAC: solo pa
 
 | Fase | Qué | ¿Escribe ante el SAT? |
 |---|---|---|
-| 0 | Respuestas de la §7; emisor y CSD de pruebas (F7); F9 | No |
+| 0 | `facturacion` API v2 sin Creator: F1–F3, F5–F7, F9 (y F4 si aplica), probada solo en modo prueba | Solo pruebas |
 | 1 | R1–R3 + `GET /cfdi/preparar` + Slate "Por timbrar" en **solo vista previa**; widgets en modo Creator (consulta + enlace) | No |
 | 2 | F1–F3 (+F6) en `facturacion`; R4–R5 timbrado; botón Timbrar **solo en modo prueba** con la org sandbox | Solo pruebas (SF test) |
 | 3 | Cancelación y estatus (F5, R6); Slate "CFDI emitidos" | Solo pruebas |
