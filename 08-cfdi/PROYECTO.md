@@ -40,12 +40,35 @@ existen en el SAT. Producción, por despacho y con aprobación expresa del usuar
 
 Archivos binarios: `services/ArchivoService.js` (misma conexión que `core`, sin pasar por `PrebillApiClient`).
 
+## Fase 2 (2026-11-25)
+
+Función: `GET /:org/cfdi/:id/cancelable` (`?motivo=&sustituto=`); `preparar`, `borrador`, `timbrar`,
+`complemento/preparar` y `complemento` aceptan `moneda` (`factura`/`mxn`, solo facturas), `tc_fuente`
+(`books`/`banxico`/`manual`), `tipo_cambio` (solo manual, > 0, hasta 6 decimales) y `confirmar_tipo_cambio`;
+`/pdf?original=1` y `/acuse?formato=xml`. 9 pruebas.
+
+Pantallas:
+- **Por timbrar** y **Complementos:** bloque "Moneda del CFDI / Tipo de cambio" (el de Books, FIX de Banxico o
+  manual con "Aplicar"), con el TC usado, el de Books, el FIX y la desviación; si se aleja más de 10 % del
+  FIX, casilla "Confirmo el tipo de cambio" obligatoria para timbrar. En MXN los conceptos dicen
+  "(USD 1000.00 a TC 22)". La vista previa en PDF usa las mismas opciones.
+- **CFDI emitidos:** al cancelar se pregunta primero si se puede (una PPD con complementos vigentes no:
+  lista cuáles cancelar primero, con enlace); estado completo de la cancelación (resultado, fechas,
+  seguimiento, rechazos anteriores); PDF con leyenda, PDF original y acuse en PDF y XML; datos de moneda y
+  TC y advertencias.
+
+Probado en Chrome con datos reales sin escribir: INV-000808 (USD) con TC de Books 19.629, FIX 19.3668 y manual
+22 (13.6 % → pide confirmar); convertida a MXN 25,520.00 con "(USD 1000.00 a TC 22)"; la PPD PRB-796 no se
+puede cancelar por su complemento PRBP-183 en proceso; PRBP-183 muestra la cancelación y baja acuse XML y PDF
+original. Cada pantalla 6 pruebas.
+
 ## Decisiones pendientes (de la respuesta de ReportesSandbox, 2026-11-25)
 
 - Claves SAT propuestas: honorarios, fijos y gastos `80121600` / `E48` "Servicio" / objeto `02`;
   reembolsos fuera del CFDI (se registra el monto excluido).
 - `al_facturar` siempre es PPD; el sandbox quedó en `al_pagar`.
 - Callbacks: propuesta de ruta `/cfdi-callback` fuera del token, solo POST desde la IP de la API y con HMAC.
+- ¿Permitir cancelar una PPD cuyos complementos estén en proceso (202)? Hoy se bloquea (regla del SAT).
 - Escribir en Books (adjuntos y UUID): no implementado.
 - Ninguna factura de Prebill se puede timbrar hoy sin corregir datos en Books (cliente sin RFC, línea
   sin IVA, factura en borrador).
