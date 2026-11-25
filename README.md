@@ -28,7 +28,7 @@ Aptus Widgets/
 
 | Proyecto | Estado |
 |---|---|
-| Inicio | Menú principal listo (2026-11-18); falta su proyecto y Slate. Botón Menú en las 18 pantallas |
+| Inicio | Publicado: menú principal (con sección CFDI) y botón Menú en todas las pantallas |
 | Tiempos | Publicado (2026-11-11): vía ReportesSandbox |
 | Gastos | En producción (2026-11-11): proyecto, función y Slates propias |
 | Honorarios fijos | En producción (2026-11-11): proyecto, función y Slates propias |
@@ -36,7 +36,7 @@ Aptus Widgets/
 | Configuración | Publicado (2026-11-13): Configuración de abogados; Configuración del despacho. Tarifas y clientes (2026-11-18) |
 | Prebills | Publicado (2026-11-13): lista, nueva y detalle; facturar y deshacer en Books (fase 2) |
 | Reportes | Publicado (2026-11-14): WIP, Ingresos (Reporte 03) y Cobranza; solo lectura |
-| CFDI | Función desplegada y 3 pantallas listas (2026-11-25), modo prueba; faltan sus Slates |
+| CFDI | Publicado (2026-11-25), modo prueba: por timbrar, emitidos y complementos de pago |
 
 Las carpetas de funciones y Slates son repositorios independientes y este repositorio las ignora
 (`.gitignore`).

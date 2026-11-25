@@ -76,6 +76,6 @@ celular. Función 7 pruebas; cada pantalla 5.
 
 1. ~~Proyecto, función y repos~~ Hecho (2026-11-25): desplegada; en vivo responden proveedor (aptus,
    modo prueba, `al_pagar`), pendientes, preparar, lista, detalle, PDF y acuse.
-2. El usuario crea las 3 Slates y agrega sus dominios a CORS → verifico publicadas.
+2. ~~Slates y CORS~~ Hecho (2026-11-25): las 3 publicadas dan los mismos datos, sin escrituras ni errores.
 3. Prueba del usuario (modo prueba): completar en Books los datos fiscales de un cliente de prueba,
    timbrar una factura, ver XML/PDF, cancelar con motivo 02 y timbrar un complemento de una factura PPD.
