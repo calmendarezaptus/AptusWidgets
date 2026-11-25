@@ -99,3 +99,6 @@ cd UniversalAptusProjectConfig && npm test         # 5
    `abogados.responsable`, mismo día); la tabla del Data Store que se planteó antes ya no hace falta.
 5. Prueba completa del usuario: liberar un periodo de un cliente; cambiar un dato, agregar/editar/borrar
    una tarifa y un responsable de prueba.
+6. Agrupación en Prebills (2026-11-25): Configuración del proyecto tiene "Agrupar en Prebills" (con el
+   cliente / Prebill propia → `prebill_agrupacion`); `PATCH /proyectos/:id` lo valida. Liberaciones enlaza a
+   "Generar Prebills" desde lo disponible para Prebill.

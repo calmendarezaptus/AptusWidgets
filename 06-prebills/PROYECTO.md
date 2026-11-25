@@ -87,3 +87,12 @@ cd UniversalAptusPrebillDetail && npm test   # 5
    "Imprimir"). En el detalle, botón "Imprimir": formato, idioma, Descargar PDF, Abrir PDF y Versión
    para imprimir. En vivo: PDF carta de la #9 en 6 s (85 KB), detallado en 1 s; #9999 → 404.
    Probado en Chrome sin escribir. Función 13 pruebas; detalle 7.
+7. ~~Generación masiva y agrupación por proyecto~~ Hecho (2026-11-25). ReportesSandbox: cada proyecto tiene
+   `prebill_agrupacion` (`cliente` = una Prebill por cliente y moneda, dividida por proyecto; `proyecto` = una
+   propia), y `GET /prebills/generar/vista-previa` + `POST /prebills/generar` (transacción, idempotente por
+   `solicitud_id`). Función: `GET /:org/prebills/generar/vista-previa` (`desde`/`hasta` juntos, `cliente_id`,
+   `moneda`) y `POST /:org/prebills/generar` (`confirmar`, `solicitud_id`, filtros, `grupos`), registradas antes
+   de `/prebills/:id`; 16 pruebas. Lista de Prebills: botón **Generar Prebills** (o `?generar=1`): periodo
+   (todo lo pendiente, este mes, mes pasado u otro rango) y moneda; grupos con casillas, detalle por proyecto,
+   bloqueantes y avisos; Generar con confirmación; resultado con enlace a cada Prebill. 9 pruebas. Probado en
+   Chrome sin generar: 1 grupo (Go Sharp, 2 proyectos, 4,100.00 MXN).
