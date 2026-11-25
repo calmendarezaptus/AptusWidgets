@@ -22,6 +22,7 @@ Aptus Widgets/
 ├─ 05-configuracion/          PROYECTO.md · functions/aptus_settings_services · 3 Slates
 ├─ 06-prebills/               PROYECTO.md · functions/prebill_services · 2 Slates
 ├─ 07-reportes/               PROYECTO.md · functions/aptus_report_services · 3 Slates
+├─ 08-cfdi/                   PROYECTO.md · functions/aptus_cfdi_services · 3 Slates
 └─ _archivo/                   ZIP y bundles originales (no se versiona)
 ```
 
@@ -35,6 +36,7 @@ Aptus Widgets/
 | Configuración | Publicado (2026-11-13): Configuración de abogados; Configuración del despacho. Tarifas y clientes (2026-11-18) |
 | Prebills | Publicado (2026-11-13): lista, nueva y detalle; facturar y deshacer en Books (fase 2) |
 | Reportes | Publicado (2026-11-14): WIP, Ingresos (Reporte 03) y Cobranza; solo lectura |
+| CFDI | Función desplegada y 3 pantallas listas (2026-11-25), modo prueba; faltan sus Slates |
 
 Las carpetas de funciones y Slates son repositorios independientes y este repositorio las ignora
 (`.gitignore`).
