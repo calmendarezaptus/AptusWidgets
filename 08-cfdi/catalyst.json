@@ -1,0 +1,9 @@
+{
+  "functions": {
+    "targets": [
+      "aptus_cfdi_services"
+    ],
+    "ignore": [],
+    "source": "functions"
+  }
+}
