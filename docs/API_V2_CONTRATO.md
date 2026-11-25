@@ -1,5 +1,7 @@
 # API v2 de facturación CFDI 4.0 — Contrato para integradores
 
+> **Copia de la versión 2026-11-24 (fase 1).** La vigente (2026-11-25, fase 2: resultado de cancelación, PDF con leyenda, tipo de cambio) está en el servidor de facturación, en `docs/API_V2_CONTRATO.md`; reemplaza esta copia con ella.
+>
 > Versión 2026-11-24. Para el equipo que integra **ReportesSandbox** (u otro sistema propio) con el servidor de facturación.
 
 ## 1. Conexión

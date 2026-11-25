@@ -51,16 +51,27 @@ campos y los guarda en el registro (no se pueden cambiar después de timbrar).
 
 **Reglas:**
 - `moneda=mxn` con factura en MXN no hace nada. Con factura en USD/EUR: convierte cada importe con el TC y
-  redondea como lo hace la API (conceptos a 2 decimales; el total lo recalcula la API). Muestra la
-  diferencia contra Books × TC.
-- `manual`: TC > 0, hasta 6 decimales; valida el rango con la regla de la API (`TIPO_CAMBIO_FUERA_DE_RANGO`)
-  y muéstralo como bloqueante en la vista previa, antes de timbrar.
-- El PDF imprime el TC usado.
+  redondea como lo hace la API (conceptos a 2 decimales; el total lo recalcula la API) y manda
+  `moneda:"MXN"` **sin** `TipoCambio` (contrato §7). Muestra la diferencia contra Books × TC.
+- **El PDF de un CFDI convertido a MXN imprime `1.0000`**: agrega a la descripción de cada concepto el
+  importe original y el TC usado (p. ej. "Honorarios (USD 100.00 a TC 19.3668)"), y muéstralo así en la
+  vista previa. En la moneda de la factura, el PDF ya imprime el `TipoCambio` del CFDI.
+- **Tipo de cambio:** usa `GET /tipo-cambio` de la API para el FIX y su `rango_aceptado`. Por debajo de 0,
+  con más de 6 decimales o por encima de `rango_aceptado.maximo` → **bloqueante** en la vista previa. Como el
+  SAT acepta hasta 6 veces el FIX, ese rango casi nunca detiene un error de captura: si el TC elegido se
+  aleja **más de 10 % del FIX**, márcalo como aviso fuerte y exige `confirmar_tipo_cambio:true` en
+  `POST /cfdi/timbrar` (si no viene, 422 con el motivo). Guarda y devuelve las `advertencias` que mande la API.
+- `pdf.tipoCambio` ya no se usa (la API lo ignora): no lo mandes.
 - La conciliación (`/facturas-cfdi`, `/ingresos`) debe entender un CFDI en MXN de una factura en USD (ya
   existe el aviso `CFDI_EN_MXN`).
-- **Complementos:** `TipoCambioP` y `EquivalenciaDR` con la misma lógica cuando el pago y la factura están en
-  monedas distintas. `GET /cfdi/complemento/preparar/:payment_id` acepta `tc_fuente`/`tipo_cambio` para el
-  pago y muestra la equivalencia.
+- **Complementos:** `TipoCambioP` y `EquivalenciaDR` como en la tabla del contrato (§5, `POST /pagos`:
+  USD→USD, MXN→USD y USD→MXN, ya verificados en el PAC de pruebas). `GET /cfdi/complemento/preparar/:payment_id`
+  acepta `tc_fuente`/`tipo_cambio` para el pago, muestra la equivalencia y aplica las mismas reglas de
+  rango y de "más de 10 % del FIX".
+- **Cancelación:** usa los campos nuevos de la API (`cancelacion.resultado`, `fecha_solicitud`,
+  `fecha_resultado`, `puede_volver_a_solicitar`, `seguimiento`, `cancelaciones_anteriores`) en lugar de
+  deducirlos; el barrido de la API ya sigue las 202 sin límite, así que el tuyo puede espaciarse.
+- **PDF:** el encabezado `X-PDF-Leyenda` de la API dice qué leyenda trae; úsalo para `pdf.leyenda`.
 
 ## Al terminar
 
